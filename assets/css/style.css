@@ -1,0 +1,116 @@
+/* --- FUNDOS DAS PÁGINAS --- */
+.backindex {
+  background: linear-gradient(to bottom, #1e0132, rgb(65, 1, 117));
+  background-attachment: fixed;
+}
+
+.backproducts {
+  background: linear-gradient(to bottom, #ffffff, rgb(91, 0, 165));
+  background-attachment: fixed;
+}
+
+/* --- FONTES --- */
+.momofont {
+  font-family: "Momo Trust Display", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.archivofont {
+  font-family: "Archivo Black", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.robotofont {
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
+
+/* --- CARDS DE PRODUTO --- */
+.card.backproducts {
+  background: linear-gradient(180deg, #a94cff, #5b1fa3);
+  border: none;
+  border-radius: 10px;
+  height: auto; /* ← removido o height fixo */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+/* Imagens proporcionais e centralizadas */
+.card.backproducts img {
+  width: 100%;
+  height: auto;
+  max-height: 220px;
+  object-fit: contain;
+  background-color: transparent;
+  padding: 10px;
+  margin: 0 auto;
+}
+
+/* Responsivo: ajusta imagem para telas pequenas */
+@media (max-width: 576px) {
+  .card.backproducts img {
+    max-height: 160px;
+    padding: 6px;
+  }
+}
+
+/* Texto centralizado e equilibrado */
+.card.backproducts .card-body {
+  flex-grow: 1;
+  text-align: center;
+}
+
+/* Efeito hover sutil */
+.card.backproducts:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(219, 128, 255, 0.3);
+}
+
+/* --- BOTÃO PRINCIPAL --- */
+.btn-custom {
+  background-color: #69069d;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  box-shadow: 0 4px 12px rgba(219, 128, 255, 0.3); /* brilho fixo */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-custom:hover {
+  transform: translateY(-2px);
+  color: #ffffff;
+  background-color: #69069d;
+  box-shadow: 0 4px 12px rgba(219, 128, 255, 0.3);
+}
+
+/* --- IMAGEM PRINCIPAL "SHOTKEYS" --- */
+.shotkeys-img {
+  width: 100%;
+  max-width: 700px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 20px;
+}
+
+/* --- RESPONSIVIDADE GERAL --- */
+@media (max-width: 576px) {
+  .shotkeys-img {
+    max-width: 90%;
+  }
+
+  .robotofont {
+    font-size: 1rem;
+  }
+
+  .btn-custom {
+    font-size: 0.9rem;
+    padding: 0.5rem 1.2rem;
+  }
+}
