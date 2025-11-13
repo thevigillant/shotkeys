@@ -1,5 +1,5 @@
 <?php
-$host = 'srv812.hstgr.io'; // ou o host que aparecer pra você
+$host = '192.168.100.110'; // ou o host que aparecer pra você
 $dbname = 'u341346182_DadosShotKeys';
 $username = 'u341346182_shotadmin';
 $password = 'Admshot2k25';
