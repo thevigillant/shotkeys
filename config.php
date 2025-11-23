@@ -4,9 +4,9 @@ session_start();
 
 // AJUSTE ESSAS VARIÁVEIS COM OS DADOS DA SUA BASE
 $DB_HOST = 'localhost';        // confirme no hPanel
-$DB_NAME = 'SEU_BANCO';
-$DB_USER = 'SEU_USUARIO';
-$DB_PASS = 'SUA_SENHA';
+$DB_NAME = 'u341346182_DadosShotKeys';
+$DB_USER = 'u341346182_shotadmin';
+$DB_PASS = 'Admshot2k25';
 
 try {
   $pdo = new PDO(
