@@ -49,41 +49,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-  <title>Criar conta - Minha Aplicação</title>
+  <title>Criar conta - ShotKeys</title> <!-- Título atualizado -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Bootstrap CSS (CDN) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Google Fonts (Opcional, mas melhora a tipografia) -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Archivo+Black&display=swap" rel="stylesheet">
   <!-- Custom CSS -->
   <style>
-    /* Variáveis de Cores (Exemplo) */
+    /* Variáveis de Cores (Atualizado para o tema da ShotKeys) */
     :root {
-      --primary-color: #007bff; /* Azul padrão do Bootstrap */
-      --primary-dark: #0056b3;
-      --secondary-bg: #f0f2f5; /* Um cinza claro para o fundo */
-      --text-color-dark: #333;
-      --text-color-light: #6c757d;
+      --bg-dark-primary: #12002b; /* Fundo principal muito escuro */
+      --bg-dark-secondary: #210041; /* Fundo para o container do formulário */
+      --accent-purple: #c725d2; /* Cor de destaque (botão, links) - um magenta/roxo vibrante */
+      --accent-purple-hover: #a21ea9; /* Cor de destaque hover */
+      --input-bg-dark: #3a1a5b; /* Fundo dos inputs */
+      --text-color-light: #f8f8f8; /* Texto claro */
+      --text-color-muted: #b0a0c0; /* Texto mais suave, para descrições */
+      --border-color-dark: #5a3a7b; /* Cor da borda dos inputs e containers */
+      --alert-danger-bg: #4a0505; /* Fundo vermelho escuro para erros */
+      --alert-success-bg: #0a4a15; /* Fundo verde escuro para sucesso */
     }
 
     body {
       font-family: 'Poppins', sans-serif;
-      background-color: var(--secondary-bg);
+      /* Gradiente sutil para o fundo, parecido com o da ShotKeys */
+      background: linear-gradient(135deg, var(--bg-dark-primary) 0%, #0d001a 100%);
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh; /* Ocupa a altura total da viewport */
+      min-height: 100vh;
       margin: 0;
-      padding: 20px; /* Padding para telas pequenas */
+      padding: 20px;
+      color: var(--text-color-light); /* Cor padrão do texto no body */
     }
 
     .registration-container {
-      max-width: 480px; /* Um pouco mais estreito, pode ser 420-520 */
+      max-width: 480px;
       width: 100%;
-      background-color: #fff;
-      border-radius: 12px; /* Cantos mais arredondados */
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Sombra mais suave e pronunciada */
-      padding: 40px; /* Padding interno maior */
+      background-color: var(--bg-dark-secondary); /* Fundo escuro para o container */
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Sombra mais escura e pronunciada */
+      padding: 40px;
+      border: 1px solid var(--border-color-dark); /* Borda sutil para definir */
     }
 
     .brand-logo {
@@ -91,73 +99,97 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       margin-bottom: 30px;
     }
     .brand-logo h2 {
+      font-family: 'Archivo Black', sans-serif; /* Fonte para o logo */
       font-weight: 700;
-      color: var(--primary-color);
-      font-size: 2rem;
+      color: var(--accent-purple); /* Cor de destaque para o logo */
+      font-size: 2.2rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
-    /* Ou uma imagem de logo */
-    /* .brand-logo img {
-      max-width: 120px;
-      height: auto;
-    } */
 
     h1.form-title {
-      font-size: 1.8rem;
+      font-size: 2rem;
       font-weight: 600;
-      color: var(--text-color-dark);
+      color: var(--text-color-light);
       margin-bottom: 30px;
       text-align: center;
     }
 
     .form-label {
       font-weight: 500;
-      color: var(--text-color-dark);
-      margin-bottom: 8px; /* Espaçamento entre label e input */
+      color: var(--text-color-light);
+      margin-bottom: 8px;
     }
 
     .form-control {
-      height: 48px; /* Altura um pouco maior para inputs */
-      border-radius: 8px; /* Cantos arredondados para inputs */
-      border-color: #e0e0e0;
+      height: 48px;
+      border-radius: 8px;
+      background-color: var(--input-bg-dark); /* Fundo escuro para input */
+      color: var(--text-color-light); /* Cor do texto digitado */
+      border: 1px solid var(--border-color-dark); /* Borda mais discreta */
       padding: 0.75rem 1rem;
       transition: all 0.2s ease-in-out;
     }
 
     .form-control:focus {
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25); /* Sombra de foco padrão, ou customizada */
+      border-color: var(--accent-purple); /* Borda de foco com a cor de destaque */
+      box-shadow: 0 0 0 0.25rem rgba(199, 37, 210, 0.4); /* Sombra de foco com a cor de destaque e opacidade */
+      background-color: var(--input-bg-dark); /* Manter o fundo escuro */
+      color: var(--text-color-light);
+    }
+
+    /* Placeholder color para inputs escuros */
+    .form-control::placeholder {
+      color: var(--text-color-muted); /* Texto mais suave para o placeholder */
     }
 
     .btn-primary {
-      background-color: var(--primary-color);
-      border-color: var(--primary-color);
+      background-color: var(--accent-purple);
+      border-color: var(--accent-purple);
       font-weight: 600;
-      height: 50px; /* Altura do botão */
+      height: 50px;
       border-radius: 8px;
       font-size: 1.1rem;
+      color: white; /* Certificar que o texto do botão é branco */
       transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, transform 0.1s ease-in-out;
     }
 
     .btn-primary:hover {
-      background-color: var(--primary-dark);
-      border-color: var(--primary-dark);
-      transform: translateY(-1px); /* Pequeno efeito de elevação no hover */
+      background-color: var(--accent-purple-hover);
+      border-color: var(--accent-purple-hover);
+      transform: translateY(-2px); /* Efeito de elevação mais pronunciado */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* Sombra no hover */
     }
 
+    /* Estilo para alerts em tema escuro */
     .alert {
       border-radius: 8px;
       font-size: 0.95rem;
-      margin-bottom: 25px; /* Mais espaço abaixo do alerta */
+      margin-bottom: 25px;
+      color: var(--text-color-light); /* Texto claro para alerts */
+      border: none; /* Remove borda padrão do bootstrap */
+      padding: 1rem 1.25rem; /* Ajusta o padding */
+    }
+
+    .alert-danger {
+      background-color: var(--alert-danger-bg);
+      border: 1px solid rgba(255, 0, 0, 0.3); /* Borda sutil de erro */
+    }
+
+    .alert-success {
+      background-color: var(--alert-success-bg);
+      border: 1px solid rgba(0, 255, 0, 0.3); /* Borda sutil de sucesso */
     }
 
     .text-center a {
-      color: var(--primary-color);
+      color: var(--accent-purple); /* Links com a cor de destaque */
       font-weight: 500;
       text-decoration: none;
     }
 
     .text-center a:hover {
       text-decoration: underline;
+      color: var(--accent-purple-hover);
     }
 
     /* Ajuste para alinhar verticalmente no centro caso o conteúdo seja menor que a viewport */
@@ -169,8 +201,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 <div class="registration-container">
   <div class="brand-logo">
-    <!-- Você pode colocar uma imagem aqui, ou um título como este -->
-    <h2>Minha Aplicação</h2>
+    <!-- Pode ser "ShotKeys" ou o nome da sua aplicação -->
+    <h2>SHOTKEYS</h2>
   </div>
 
   <h1 class="form-title">Criar sua conta</h1>
