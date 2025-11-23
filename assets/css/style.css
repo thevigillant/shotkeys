@@ -1,59 +1,113 @@
-/* --- FUNDOS DAS PÁGINAS --- */
-.backindex {
-  background: linear-gradient(to bottom, #1e0132, rgb(65, 1, 117));
+/* ============================================================
+   ROOT / TEMA GLOBAL
+   ============================================================ */
+:root {
+  --custom-primary-bg: #1a0033;
+  --custom-secondary-bg: #4f0088;
+  --custom-accent-color: #e600e6;
+  --custom-hover-color: #ff00ff;
+  --custom-shadow-color: rgba(0, 0, 0, 0.4);
+}
+
+/* ============================================================
+   BODY / CONFIGURAÇÕES GERAIS
+   ============================================================ */
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--bs-white);
+  scroll-behavior: smooth;
+  padding-top: 56px;
   background-attachment: fixed;
+}
+
+@media (min-width: 992px) {
+  body {
+    padding-top: 60px;
+  }
+}
+
+/* ============================================================
+   BACKGROUNDS PRINCIPAIS
+   ============================================================ */
+.backindex {
+  background: linear-gradient(to bottom, #1e0132, #410175);
 }
 
 .backproducts {
-  background: linear-gradient(to bottom, #ffffff, rgb(91, 0, 165));
-  background-attachment: fixed;
+  background: linear-gradient(to bottom, #ffffff, #5b00a5);
 }
 
-/* --- FONTES --- */
+/* ============================================================
+   FONTES PERSONALIZADAS
+   ============================================================ */
 .momofont {
   font-family: "Momo Trust Display", sans-serif;
-  font-weight: 400;
-  font-style: normal;
 }
 
 .archivofont {
   font-family: "Archivo Black", sans-serif;
-  font-weight: 400;
-  font-style: normal;
 }
 
 .robotofont {
   font-family: "Roboto", sans-serif;
   font-optical-sizing: auto;
-  font-style: normal;
   font-variation-settings: "wdth" 100;
 }
 
-/* --- CARDS DE PRODUTO --- */
+@media (max-width: 576px) {
+  .robotofont {
+    font-size: 1rem;
+  }
+}
+
+/* ============================================================
+   HERO SECTION
+   ============================================================ */
+.hero-section {
+  background: linear-gradient(
+    135deg,
+    var(--custom-primary-bg),
+    var(--custom-secondary-bg)
+  );
+  border-bottom: 2px solid var(--custom-accent-color);
+}
+
+/* Botão principal */
+.btn-custom-accent {
+  background: var(--custom-accent-color);
+  color: #fff;
+  font-weight: bold;
+  border: 1px solid var(--custom-accent-color);
+  transition: 0.3s ease, transform 0.2s ease;
+}
+
+.btn-custom-accent:hover {
+  background: var(--custom-hover-color);
+  border-color: var(--custom-hover-color);
+  transform: translateY(-2px);
+}
+
+/* ============================================================
+   CARDS (Home / Products)
+   ============================================================ */
 .card.backproducts {
   background: linear-gradient(180deg, #a94cff, #5b1fa3);
   border: none;
   border-radius: 10px;
-  height: auto; /* ← removido o height fixo */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: 0.3s ease;
   margin-bottom: 1rem;
 }
 
-/* Imagens proporcionais e centralizadas */
 .card.backproducts img {
-  width: 100%;
-  height: auto;
   max-height: 220px;
   object-fit: contain;
-  background-color: transparent;
   padding: 10px;
   margin: 0 auto;
 }
 
-/* Responsivo: ajusta imagem para telas pequenas */
 @media (max-width: 576px) {
   .card.backproducts img {
     max-height: 160px;
@@ -61,56 +115,187 @@
   }
 }
 
-/* Texto centralizado e equilibrado */
 .card.backproducts .card-body {
-  flex-grow: 1;
   text-align: center;
 }
 
-/* Efeito hover sutil */
 .card.backproducts:hover {
   transform: translateY(-5px);
   box-shadow: 0 6px 15px rgba(219, 128, 255, 0.3);
 }
 
-/* --- BOTÃO PRINCIPAL --- */
+/* Cards genéricos */
+.product-card {
+  transition: 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px var(--custom-accent-color);
+}
+
+.product-card .card-img-top {
+  height: 250px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================================
+   BOTÃO GLOBAL
+   ============================================================ */
 .btn-custom {
-  background-color: #69069d;
-  color: white;
+  background: #69069d;
+  color: #fff;
   font-weight: bold;
   border-radius: 5px;
-  box-shadow: 0 4px 12px rgba(219, 128, 255, 0.3); /* brilho fixo */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 12px rgba(219, 128, 255, 0.3);
+  transition: 0.3s ease;
 }
 
 .btn-custom:hover {
   transform: translateY(-2px);
-  color: #ffffff;
-  background-color: #69069d;
-  box-shadow: 0 4px 12px rgba(219, 128, 255, 0.3);
 }
 
-/* --- IMAGEM PRINCIPAL "SHOTKEYS" --- */
-.shotkeys-img {
-  width: 100%;
-  max-width: 700px;
-  height: auto;
-  object-fit: contain;
-  margin-bottom: 20px;
-}
-
-/* --- RESPONSIVIDADE GERAL --- */
 @media (max-width: 576px) {
-  .shotkeys-img {
-    max-width: 90%;
-  }
-
-  .robotofont {
-    font-size: 1rem;
-  }
-
   .btn-custom {
     font-size: 0.9rem;
     padding: 0.5rem 1.2rem;
   }
+}
+
+/* ============================================================
+   IMG PRINCIPAL (SHOTKEYS)
+   ============================================================ */
+.shotkeys-img {
+  width: 100%;
+  max-width: 700px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 576px) {
+  .shotkeys-img {
+    max-width: 90%;
+  }
+}
+
+/* ============================================================
+   FAQ / ACORDION
+   ============================================================ */
+.faq-item {
+  transition: 0.3s ease;
+}
+
+.faq-item:hover {
+  transform: translateY(-3px);
+}
+
+.accordion-button:not(.collapsed) {
+  color: #fff;
+  background: var(--custom-secondary-bg);
+  border-bottom: 1px solid var(--custom-accent-color);
+}
+
+.accordion-button:focus {
+  box-shadow: 0 0 0 0.25rem rgba(230, 0, 230, 0.25);
+}
+
+/* ============================================================
+   UTILIDADES / BACKGROUNDS / BORDAS / TEXTO
+   ============================================================ */
+.bg-custom-primary {
+  background: var(--custom-primary-bg) !important;
+}
+
+.bg-custom-secondary {
+  background: var(--custom-secondary-bg) !important;
+}
+
+.text-custom-accent {
+  color: var(--custom-accent-color) !important;
+}
+
+.border-custom-secondary {
+  border-color: var(--custom-secondary-bg) !important;
+}
+
+/* ============================================================
+   TEMAS POR SEÇÃO (Nuuvem / Thunderkeys / GMG)
+   ============================================================ */
+
+/* Nuuvem — Azul Neon */
+#nuuvem {
+  --custom-secondary-bg: #0a0a40;
+  --custom-accent-color: #00ddff;
+  --custom-hover-color: #33ffff;
+}
+
+/* Thunderkeys — Verde Neon */
+#thunderkeys {
+  --custom-secondary-bg: #1a401a;
+  --custom-accent-color: #00ff00;
+  --custom-hover-color: #33ff33;
+}
+
+/* Green Man Gaming — Amarelo Neon */
+#gmg {
+  --custom-secondary-bg: #40400a;
+  --custom-accent-color: #ffff00;
+  --custom-hover-color: #ffff33;
+}
+
+/* ============================================================
+   NAVBAR — ReisDev (Clean Premium)
+   ============================================================ */
+.navbar {
+  background: rgba(20, 0, 40, 0.55);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 0, 255, 0.25);
+  padding: 0.7rem 0 !important;
+  box-shadow: none !important;
+}
+
+/* Centralização */
+.navbar-collapse {
+  justify-content: center !important;
+  align-items: center;
+}
+
+.navbar-nav {
+  gap: 1.2rem;
+  flex-wrap: nowrap !important;
+}
+
+/* Logo */
+.navbar-brand {
+  color: #fff !important;
+  font-size: 1.35rem;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+/* Links */
+.navbar .nav-link {
+  color: #fff !important;
+  font-weight: 500;
+  padding: 5px 10px;
+  transition: 0.25s;
+  opacity: 0.85;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+  opacity: 1;
+  color: var(--custom-accent-color) !important;
+  font-weight: 600;
+}
+
+/* Ícones */
+.navbar i {
+  font-size: 1.15rem;
+  transition: 0.25s;
+}
+
+.navbar i:hover {
+  color: var(--custom-accent-color);
 }
