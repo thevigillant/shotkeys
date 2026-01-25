@@ -138,7 +138,7 @@ require_login();
           <h1 class="h3 mb-2">Olá, <?= htmlspecialchars($_SESSION['user_name'] ?? 'Usuário') ?>!</h1>
           <p class="subtitle">Bem-vindo ao seu painel. Aqui ficam seus pedidos, keys e notificações importantes.</p>
         </div>
-        <a href="produtos.html" class="btn btn-primary">Explorar ofertas</a>
+        <a href="produtos.php" class="btn btn-primary">Explorar ofertas</a>
       </div>
 
       <div class="row g-3 mt-4">
