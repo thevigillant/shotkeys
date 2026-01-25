@@ -3,10 +3,25 @@
 session_start();
 
 // AJUSTE ESSAS VARIÁVEIS COM OS DADOS DA SUA BASE
-$DB_HOST = 'localhost';        // confirme no hPanel
-$DB_NAME = 'u341346182_DadosShotKeys';
-$DB_USER = 'u341346182_shotadmin';
-$DB_PASS = 'Admshot2k25';
+// Preferencialmente configure via variáveis de ambiente ou config.local.php
+$local_config = [];
+$local_config_path = __DIR__ . '/config.local.php';
+if (file_exists($local_config_path)) {
+  $loaded = require $local_config_path;
+  if (is_array($loaded)) {
+    $local_config = $loaded;
+  }
+}
+
+$DB_HOST = getenv('DB_HOST') ?: ($local_config['DB_HOST'] ?? 'localhost'); // confirme no hPanel
+$DB_NAME = getenv('DB_NAME') ?: ($local_config['DB_NAME'] ?? '');
+$DB_USER = getenv('DB_USER') ?: ($local_config['DB_USER'] ?? '');
+$DB_PASS = getenv('DB_PASS') ?: ($local_config['DB_PASS'] ?? '');
+
+if ($DB_NAME === '' || $DB_USER === '') {
+  http_response_code(500);
+  exit('Configuração de banco de dados ausente. Configure DB_NAME e DB_USER (env ou config.local.php).');
+}
 
 try {
   $pdo = new PDO(
