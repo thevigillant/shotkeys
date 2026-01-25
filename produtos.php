@@ -1,3 +1,8 @@
+<?php
+require __DIR__ . '/config.php';
+require_login();
+$user_name = htmlspecialchars($_SESSION['user_name'] ?? 'Usuário');
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
   <head>
@@ -69,16 +74,20 @@
           </ul>
 
           <!-- Ícones laterais (Carrinho, Usuário) -->
-          <ul class="navbar-nav gap-3">
+          <ul class="navbar-nav gap-3 align-items-lg-center">
             <li class="nav-item">
               <a class="nav-link" href="#" aria-label="Carrinho">
                 <i class="fas fa-shopping-cart fa-lg"></i>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#" aria-label="Usuário">
+              <div class="d-flex align-items-center gap-2 text-white">
                 <i class="fas fa-user-circle fa-lg"></i>
-              </a>
+                <span class="fw-semibold"><?= $user_name ?></span>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link fw-semibold text-custom-accent" href="dashboard.php">Painel</a>
             </li>
           </ul>
         </div>
