@@ -3,6 +3,7 @@
 session_start();
 
 // AJUSTE ESSAS VARIÁVEIS COM OS DADOS DA SUA BASE
+codex/identify-project-error-and-next-steps-gsdxyw
 // Preferencialmente configure via variáveis de ambiente ou config.local.php
 $local_config = [];
 $local_config_path = __DIR__ . '/config.local.php';
@@ -21,6 +22,16 @@ $DB_PASS = getenv('DB_PASS') ?: ($local_config['DB_PASS'] ?? '');
 if ($DB_NAME === '' || $DB_USER === '') {
   http_response_code(500);
   exit('Configuração de banco de dados ausente. Configure DB_NAME e DB_USER (env ou config.local.php).');
+=======
+// Preferencialmente configure via variáveis de ambiente.
+$DB_HOST = getenv('DB_HOST') ?: 'localhost'; // confirme no hPanel
+$DB_NAME = getenv('DB_NAME') ?: '';
+$DB_USER = getenv('DB_USER') ?: '';
+$DB_PASS = getenv('DB_PASS') ?: '';
+
+if ($DB_NAME === '' || $DB_USER === '') {
+  exit('Configuração de banco de dados ausente.');
+ main
 }
 
 try {
