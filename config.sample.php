@@ -2,12 +2,11 @@
 // Iniciar sessão em todas as páginas
 session_start();
 
-// AJUSTE ESSAS VARIÁVEIS COM OS DADOS DA SUA BASE
-// Preferencialmente configure via variáveis de ambiente.
-$DB_HOST = getenv('DB_HOST') ?: 'localhost'; // confirme no hPanel
-$DB_NAME = getenv('DB_NAME') ?: '';
-$DB_USER = getenv('DB_USER') ?: '';
-$DB_PASS = getenv('DB_PASS') ?: '';
+// Copie este arquivo para config.php e ajuste com seus dados.
+$DB_HOST = getenv('DB_HOST') ?: 'localhost';
+$DB_NAME = getenv('DB_NAME') ?: 'shotkeys_db';
+$DB_USER = getenv('DB_USER') ?: 'shotkeys_user';
+$DB_PASS = getenv('DB_PASS') ?: 'sua_senha_aqui';
 
 if ($DB_NAME === '' || $DB_USER === '') {
   exit('Configuração de banco de dados ausente.');
