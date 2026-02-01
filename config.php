@@ -20,7 +20,7 @@ if (file_exists($local_config_path)) {
 }
 
 // Credenciais (prioridade: env > config.local.php)
-$DB_HOST = getenv('DB_HOST') ?: ($local_config['DB_HOST'] ?? 'localhost');
+$DB_HOST = getenv('DB_HOST') ?: ($local_config['localhost'] ?? 'localhost');
 $DB_NAME = getenv('DB_NAME') ?: ($local_config['dbshotkeys'] ?? '');
 $DB_USER = getenv('DB_USER') ?: ($local_config['admshot'] ?? '');
 $DB_PASS = getenv('DB_PASS') ?: ($local_config['@Shotkeys2026'] ?? '');
