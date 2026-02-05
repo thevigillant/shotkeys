@@ -1,6 +1,16 @@
 <?php
 require 'config.php';
-
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Database Fixer</title>
+    <style>body{background:#111;color:#0f0;font-family:monospace;padding:2rem;}</style>
+</head>
+<body>
+<pre>
+<?php
 echo "Applying Database Fixes...\n";
 
 try {
@@ -26,7 +36,7 @@ try {
         echo "   ✅ Success.\n";
     }
 
-    echo "2. Checking 'order_items' table for 'type'...\n";
+    echo "3. Checking 'order_items' table for 'type'...\n";
     $stm = $pdo->query("SHOW COLUMNS FROM order_items LIKE 'type'");
     if ($stm->fetch()) {
         echo "   - Column 'type' already exists.\n";
@@ -37,8 +47,12 @@ try {
     }
 
     echo "\n🎉 Database Patch Completed Successfully.\n";
+    echo "You can now return to checkout.";
 
 } catch (PDOException $e) {
     echo "\n❌ FATAL ERROR: " . $e->getMessage() . "\n";
-    exit(1);
 }
+?>
+</pre>
+</body>
+</html>
