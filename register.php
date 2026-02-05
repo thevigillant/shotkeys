@@ -49,213 +49,137 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-  <title>Criar conta - ShotKeys</title> <!-- Título atualizado -->
-  <!-- FavIcon -->
-    <link
-      rel="icon"
-      href="assets/icons/favicon/logo-Shot-Keys.ico"
-      type="image/x-icon"
-    />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Bootstrap CSS (CDN) -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Google Fonts (Opcional, mas melhora a tipografia) -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Archivo+Black&display=swap" rel="stylesheet">
-  <!-- Custom CSS -->
-  <style>
-    /* Variáveis de Cores (Atualizado para o tema da ShotKeys) */
-    :root {
-      --bg-dark-primary: #12002b; /* Fundo principal muito escuro */
-      --bg-dark-secondary: #210041; /* Fundo para o container do formulário */
-      --accent-purple: #c725d2; /* Cor de destaque (botão, links) - um magenta/roxo vibrante */
-      --accent-purple-hover: #a21ea9; /* Cor de destaque hover */
-      --input-bg-dark: #3a1a5b; /* Fundo dos inputs */
-      --text-color-light: #f8f8f8; /* Texto claro */
-      --text-color-muted: #b0a0c0; /* Texto mais suave, para descrições */
-      --border-color-dark: #5a3a7b; /* Cor da borda dos inputs e containers */
-      --alert-danger-bg: #4a0505; /* Fundo vermelho escuro para erros */
-      --alert-success-bg: #0a4a15; /* Fundo verde escuro para sucesso */
-    }
+  <title>Criar conta - ShotKeys</title>
+  
+  <!-- Base URL -->
+  <base href="https://shotkeys.store" />
 
+  <!-- FavIcon -->
+  <link rel="icon" href="assets/icons/favicon/logo-Shot-Keys.ico" type="image/x-icon" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Google Fonts -->
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Momo+Trust+Display&display=swap");
+    @import url("https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap");
+    @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+  </style>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+
+  <style>
+    /* Estilos centralizados */
     body {
-      font-family: 'Poppins', sans-serif;
-      /* Gradiente sutil para o fundo, parecido com o da ShotKeys */
-      background: linear-gradient(135deg, var(--bg-dark-primary) 0%, #0d001a 100%);
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      margin: 0;
-      padding: 20px;
-      color: var(--text-color-light); /* Cor padrão do texto no body */
+      background: linear-gradient(135deg, #1a0033 0%, #0d001a 100%);
     }
-
-    .registration-container {
-      max-width: 480px;
+    
+    .login-wrapper {
       width: 100%;
-      background-color: var(--bg-dark-secondary); /* Fundo escuro para o container */
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Sombra mais escura e pronunciada */
-      padding: 40px;
-      border: 1px solid var(--border-color-dark); /* Borda sutil para definir */
+      max-width: 450px;
+      padding: 2rem;
     }
-
-    .brand-logo {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    .brand-logo h2 {
-      font-family: 'Archivo Black', sans-serif; /* Fonte para o logo */
-      font-weight: 700;
-      color: var(--accent-purple); /* Cor de destaque para o logo */
-      font-size: 2.2rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    h1.form-title {
-      font-size: 2rem;
-      font-weight: 600;
-      color: var(--text-color-light);
-      margin-bottom: 30px;
-      text-align: center;
-    }
-
-    .form-label {
-      font-weight: 500;
-      color: var(--text-color-light);
-      margin-bottom: 8px;
+    
+    .login-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 0 0 30px rgba(0,0,0,0.5);
     }
 
     .form-control {
-      height: 48px;
-      border-radius: 8px;
-      background-color: var(--input-bg-dark); /* Fundo escuro para input */
-      color: var(--text-color-light); /* Cor do texto digitado */
-      border: 1px solid var(--border-color-dark); /* Borda mais discreta */
-      padding: 0.75rem 1rem;
-      transition: all 0.2s ease-in-out;
+      background: rgba(0, 0, 0, 0.3) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff !important;
     }
-
+    
     .form-control:focus {
-      border-color: var(--accent-purple); /* Borda de foco com a cor de destaque */
-      box-shadow: 0 0 0 0.25rem rgba(199, 37, 210, 0.4); /* Sombra de foco com a cor de destaque e opacidade */
-      background-color: var(--input-bg-dark); /* Manter o fundo escuro */
-      color: var(--text-color-light);
+      background: rgba(0, 0, 0, 0.5) !important;
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 0.25rem rgba(230, 0, 230, 0.25);
+    }
+    
+    .form-label {
+      color: rgba(255, 255, 255, 0.9);
+      margin-top: 10px;
     }
 
-    /* Placeholder color para inputs escuros */
-    .form-control::placeholder {
-      color: var(--text-color-muted); /* Texto mais suave para o placeholder */
-    }
-
-    .btn-primary {
-      background-color: var(--accent-purple);
-      border-color: var(--accent-purple);
-      font-weight: 600;
-      height: 50px;
-      border-radius: 8px;
-      font-size: 1.1rem;
-      color: white; /* Certificar que o texto do botão é branco */
-      transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, transform 0.1s ease-in-out;
-    }
-
-    .btn-primary:hover {
-      background-color: var(--accent-purple-hover);
-      border-color: var(--accent-purple-hover);
-      transform: translateY(-2px); /* Efeito de elevação mais pronunciado */
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* Sombra no hover */
-    }
-
-    /* Estilo para alerts em tema escuro */
-    .alert {
-      border-radius: 8px;
-      font-size: 0.95rem;
-      margin-bottom: 25px;
-      color: var(--text-color-light); /* Texto claro para alerts */
-      border: none; /* Remove borda padrão do bootstrap */
-      padding: 1rem 1.25rem; /* Ajusta o padding */
-    }
-
-    .alert-danger {
-      background-color: var(--alert-danger-bg);
-      border: 1px solid rgba(255, 0, 0, 0.3); /* Borda sutil de erro */
-    }
-
-    .alert-success {
-      background-color: var(--alert-success-bg);
-      border: 1px solid rgba(0, 255, 0, 0.3); /* Borda sutil de sucesso */
-    }
-
-    .text-center a {
-      color: var(--accent-purple); /* Links com a cor de destaque */
-      font-weight: 500;
-      text-decoration: none;
-    }
-
-    .text-center a:hover {
-      text-decoration: underline;
-      color: var(--accent-purple-hover);
-    }
-
-    /* Ajuste para alinhar verticalmente no centro caso o conteúdo seja menor que a viewport */
-    html {
-        height: 100%;
+    .brand-title {
+      color: var(--color-accent);
+      text-shadow: 0 0 10px rgba(230, 0, 230, 0.3);
     }
   </style>
 </head>
 <body>
-<div class="registration-container">
-  <div class="brand-logo">
-    <!-- Pode ser "ShotKeys" ou o nome da sua aplicação -->
-    <h2>SHOTKEYS</h2>
-  </div>
 
-  <h1 class="form-title">Criar sua conta</h1>
+<div class="login-wrapper">
+  <div class="login-card">
+    <div class="text-center mb-4">
+      <h2 class="archivofont brand-title mb-0">SHOTKEYS</h2>
+      <p class="text-white opacity-75">Junte-se à elite</p>
+    </div>
 
-  <?php if ($success): ?>
-    <div class="alert alert-success text-center">
-      Cadastro realizado com sucesso! Você já pode entrar.
-    </div>
-    <div class="d-grid gap-2">
-      <a href="login.php" class="btn btn-primary">Ir para Login</a>
-    </div>
-  <?php else: ?>
-    <?php if ($errors): ?>
-      <div class="alert alert-danger">
-        <ul class="mb-0 ps-3"> <!-- ps-3 para padding-left -->
-          <?php foreach ($errors as $e): ?>
-            <li><?= htmlspecialchars($e) ?></li>
-          <?php endforeach; ?>
-        </ul>
+    <?php if ($success): ?>
+      <div class="alert alert-success border-0 bg-success bg-opacity-25 text-white text-center">
+        Cadastro realizado com sucesso!<br>
+        Você já pode entrar.
       </div>
+      <div class="d-grid gap-2">
+        <a href="login.php" class="btn btn-custom btn-lg w-100">IR PARA LOGIN</a>
+      </div>
+    <?php else: ?>
+      <?php if ($errors): ?>
+        <div class="alert alert-danger border-0 bg-danger bg-opacity-25 text-white">
+          <ul class="mb-0 ps-3">
+            <?php foreach ($errors as $e): ?>
+              <li><?= htmlspecialchars($e) ?></li>
+            <?php endforeach; ?>
+          </ul>
+        </div>
+      <?php endif; ?>
+
+      <form method="post">
+        <div class="mb-3">
+          <label for="name" class="form-label">Nome</label>
+          <input type="text" name="name" id="name" class="form-control" value="<?= htmlspecialchars($_POST['name'] ?? '') ?>" required placeholder="Seu Nome">
+        </div>
+        
+        <div class="mb-3">
+          <label for="email" class="form-label">E-mail</label>
+          <input type="email" name="email" id="email" class="form-control" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required placeholder="seu@email.com">
+        </div>
+        
+        <div class="mb-3">
+          <label for="password" class="form-label">Senha</label>
+          <input type="password" name="password" id="password" class="form-control" required placeholder="••••••••">
+        </div>
+        
+        <div class="mb-4">
+          <label for="confirm" class="form-label">Confirmar senha</label>
+          <input type="password" name="confirm" id="confirm" class="form-control" required placeholder="••••••••">
+        </div>
+        
+        <div class="d-grid gap-2 mb-3">
+          <button type="submit" class="btn btn-custom btn-lg w-100">CADASTRAR</button>
+        </div>
+        
+        <div class="text-center">
+          <span class="text-white opacity-75">Já tem conta?</span> 
+          <a href="login.php" class="text-decoration-none fw-bold" style="color: var(--color-accent);">Entre aqui</a>
+        </div>
+      </form>
     <?php endif; ?>
-
-    <form method="post">
-      <div class="mb-3">
-        <label for="name" class="form-label">Nome</label>
-        <input type="text" name="name" id="name" class="form-control" value="<?= htmlspecialchars($_POST['name'] ?? '') ?>" required>
-      </div>
-      <div class="mb-3">
-        <label for="email" class="form-label">E-mail</label>
-        <input type="email" name="email" id="email" class="form-control" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
-      </div>
-      <div class="mb-3">
-        <label for="password" class="form-label">Senha</label>
-        <input type="password" name="password" id="password" class="form-control" required>
-      </div>
-      <div class="mb-4"> <!-- mb-4 para mais espaço antes do botão -->
-        <label for="confirm" class="form-label">Confirmar senha</label>
-        <input type="password" name="confirm" id="confirm" class="form-control" required>
-      </div>
-      <div class="d-grid gap-2"> <!-- d-grid gap-2 para botão full width e espaçamento -->
-        <button type="submit" class="btn btn-primary">Cadastrar</button>
-      </div>
-      <div class="text-center mt-4"> <!-- mt-4 para mais espaço após o botão -->
-        Já tem conta? <a href="login.php">Entre aqui</a>
-      </div>
-    </form>
-  <?php endif; ?>
+  </div>
 </div>
+
 </body>
 </html>

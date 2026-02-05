@@ -1,304 +1,278 @@
-body {
-  background-color: hotpink !important; /* Cor bem chamativa para teste */
-}
 /* ============================================================
-   ROOT / TEMA GLOBAL
+   ROOT / TEMA GLOBAL - SHOTKEYS
    ============================================================ */
 :root {
-  --custom-primary-bg: #1a0033;
-  --custom-secondary-bg: #4f0088;
-  --custom-accent-color: #e600e6;
-  --custom-hover-color: #ff00ff;
-  --custom-shadow-color: rgba(0, 0, 0, 0.4);
+  /* Paleta Principal */
+  --color-bg-primary: #1a0033;
+  --color-bg-secondary: #4f0088;
+  --color-accent: #e600e6;
+  --color-accent-hover: #ff33ff;
+  
+  /* Paleta Escura/Neutra */
+  --color-dark: #0d001a;
+  --color-text-main: #ffffff;
+  --color-text-muted: rgba(255, 255, 255, 0.7);
+  
+  /* Efeitos */
+  --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 15px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 15px rgba(230, 0, 230, 0.5);
+  --glass-bg: rgba(26, 0, 51, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --transition-fast: 0.2s ease;
+  --transition-medium: 0.3s ease;
 }
 
 /* ============================================================
-   BODY / CONFIGURAÇÕES GERAIS
+   RESET E BASE
    ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  color: var(--bs-white);
-  scroll-behavior: smooth;
-  padding-top: 56px;
-  background-attachment: fixed;
+  font-family: "Roboto", "Segoe UI", Tahoma, sans-serif;
+  color: var(--color-text-main);
+  background-color: var(--color-bg-primary);
+  background: radial-gradient(circle at top center, #2e004d 0%, var(--color-bg-primary) 80%);
+  margin: 0;
+  padding-top: 70px; /* Espaço para navbar fixa */
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
 }
 
-@media (min-width: 992px) {
-  body {
-    padding-top: 60px;
-  }
+/* Scrollbar Personalizada */
+::-webkit-scrollbar {
+  width: 10px;
 }
-
-/* ============================================================
-   BACKGROUNDS PRINCIPAIS
-   ============================================================ */
-.backindex {
-  background: linear-gradient(to bottom, #1e0132, #410175);
+::-webkit-scrollbar-track {
+  background: var(--color-dark);
 }
-
-.backproducts {
-  background: linear-gradient(to bottom, #ffffff, #5b00a5);
-}
-
-/* ============================================================
-   FONTES PERSONALIZADAS
-   ============================================================ */
-.momofont {
-  font-family: "Momo Trust Display", sans-serif;
-}
-
-.archivofont {
-  font-family: "Archivo Black", sans-serif;
-}
-
-.robotofont {
-  font-family: "Roboto", sans-serif;
-  font-optical-sizing: auto;
-  font-variation-settings: "wdth" 100;
-}
-
-@media (max-width: 576px) {
-  .robotofont {
-    font-size: 1rem;
-  }
-}
-
-/* ============================================================
-   HERO SECTION
-   ============================================================ */
-.hero-section {
-  background: linear-gradient(
-    135deg,
-    var(--custom-primary-bg),
-    var(--custom-secondary-bg)
-  );
-  border-bottom: 2px solid var(--custom-accent-color);
-}
-
-/* Botão principal */
-.btn-custom-accent {
-  background: var(--custom-accent-color);
-  color: #fff;
-  font-weight: bold;
-  border: 1px solid var(--custom-accent-color);
-  transition: 0.3s ease, transform 0.2s ease;
-}
-
-.btn-custom-accent:hover {
-  background: var(--custom-hover-color);
-  border-color: var(--custom-hover-color);
-  transform: translateY(-2px);
-}
-
-/* ============================================================
-   CARDS (Home / Products)
-   ============================================================ */
-.card.backproducts {
-  background: linear-gradient(180deg, #a94cff, #5b1fa3);
-  border: none;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: 0.3s ease;
-  margin-bottom: 1rem;
-}
-
-.card.backproducts img {
-  max-height: 220px;
-  object-fit: contain;
-  padding: 10px;
-  margin: 0 auto;
-}
-
-@media (max-width: 576px) {
-  .card.backproducts img {
-    max-height: 160px;
-    padding: 6px;
-  }
-}
-
-.card.backproducts .card-body {
-  text-align: center;
-}
-
-.card.backproducts:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 15px rgba(219, 128, 255, 0.3);
-}
-
-/* Cards genéricos */
-.product-card {
-  transition: 0.3s ease;
-}
-
-.product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px var(--custom-accent-color);
-}
-
-.product-card .card-img-top {
-  height: 250px;
-  object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* ============================================================
-   BOTÃO GLOBAL
-   ============================================================ */
-.btn-custom {
-  background: #69069d;
-  color: #fff;
-  font-weight: bold;
+::-webkit-scrollbar-thumb {
+  background: var(--color-bg-secondary);
   border-radius: 5px;
-  box-shadow: 0 4px 12px rgba(219, 128, 255, 0.3);
-  transition: 0.3s ease;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
+
+/* ============================================================
+   TIPOGRAFIA
+   ============================================================ */
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  color: var(--color-text-main);
+}
+
+.momofont { font-family: "Momo Trust Display", sans-serif; }
+.archivofont { font-family: "Archivo Black", sans-serif; letter-spacing: -0.02em; }
+.robotofont { font-family: "Roboto", sans-serif; }
+
+/* ============================================================
+   COMPONENTES UI
+   ============================================================ */
+
+/* Navbar Glassmorphism */
+.navbar {
+  background: rgba(10, 0, 30, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-medium);
+  padding: 1rem 0;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  background: linear-gradient(45deg, #fff, var(--color-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-link {
+  color: var(--color-text-muted) !important;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  transition: var(--transition-fast);
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--color-accent) !important;
+  text-shadow: 0 0 8px rgba(230, 0, 230, 0.4);
+}
+
+/* Botões */
+.btn-custom {
+  background: linear-gradient(90deg, #69069d, #8a0bce);
+  color: #fff;
+  border: none;
+  padding: 0.75rem 2rem;
+  font-weight: 700;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(138, 11, 206, 0.4);
+  transition: var(--transition-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  position: relative;
+  overflow: hidden;
 }
 
 .btn-custom:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(138, 11, 206, 0.6);
+  color: #fff;
 }
 
-@media (max-width: 576px) {
-  .btn-custom {
-    font-size: 0.9rem;
-    padding: 0.5rem 1.2rem;
-  }
+.btn-custom::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: 0.5s;
+}
+
+.btn-custom:hover::after {
+  left: 100%;
 }
 
 /* ============================================================
-   IMG PRINCIPAL (SHOTKEYS)
+   SEÇÕES
    ============================================================ */
-.shotkeys-img {
-  width: 100%;
-  max-width: 700px;
-  margin-bottom: 20px;
+
+/* Hero Section */
+.hero-wrapper {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 1;
 }
 
-@media (max-width: 576px) {
-  .shotkeys-img {
-    max-width: 90%;
-  }
+.shotkeys-img {
+  max-width: 100%;
+  width: 600px;
+  filter: drop-shadow(0 0 20px rgba(230, 0, 230, 0.2));
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Cards de Produtos */
+.product-card {
+  background: rgba(255, 255, 255, 0.05); /* Glass dark */
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: var(--transition-medium);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card:hover {
+  transform: translateY(-10px);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: var(--shadow-glow);
+  border-color: var(--color-accent);
+}
+
+.product-card img {
+  width: 100%;
+  height: 250px;
+  object-fit: contain;
+  padding: 2rem;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  transition: var(--transition-medium);
+}
+
+.product-card:hover img {
+  transform: scale(1.05);
+}
+
+.product-card .card-body {
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.product-card .card-title {
+  font-family: "Archivo Black", sans-serif;
+  color: var(--color-accent);
+  margin-bottom: 0.5rem;
+}
+
+.product-card .card-text {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 1.5rem;
 }
 
 /* ============================================================
    FAQ / ACORDION
    ============================================================ */
-.faq-item {
-  transition: 0.3s ease;
+.accordion-item {
+  background-color: transparent;
+  border: 1px solid var(--glass-border);
+  margin-bottom: 1rem;
+  border-radius: 8px !important;
+  overflow: hidden;
 }
 
-.faq-item:hover {
-  transform: translateY(-3px);
-}
-
-.accordion-button:not(.collapsed) {
-  color: #fff;
-  background: var(--custom-secondary-bg);
-  border-bottom: 1px solid var(--custom-accent-color);
-}
-
-.accordion-button:focus {
-  box-shadow: 0 0 0 0.25rem rgba(230, 0, 230, 0.25);
-}
-
-/* ============================================================
-   UTILIDADES / BACKGROUNDS / BORDAS / TEXTO
-   ============================================================ */
-.bg-custom-primary {
-  background: var(--custom-primary-bg) !important;
-}
-
-.bg-custom-secondary {
-  background: var(--custom-secondary-bg) !important;
-}
-
-.text-custom-accent {
-  color: var(--custom-accent-color) !important;
-}
-
-.border-custom-secondary {
-  border-color: var(--custom-secondary-bg) !important;
-}
-
-/* ============================================================
-   TEMAS POR SEÇÃO (Nuuvem / Thunderkeys / GMG)
-   ============================================================ */
-
-/* Nuuvem — Azul Neon */
-#nuuvem {
-  --custom-secondary-bg: #0a0a40;
-  --custom-accent-color: #00ddff;
-  --custom-hover-color: #33ffff;
-}
-
-/* Thunderkeys — Verde Neon */
-#thunderkeys {
-  --custom-secondary-bg: #1a401a;
-  --custom-accent-color: #00ff00;
-  --custom-hover-color: #33ff33;
-}
-
-/* Green Man Gaming — Amarelo Neon */
-#gmg {
-  --custom-secondary-bg: #40400a;
-  --custom-accent-color: #ffff00;
-  --custom-hover-color: #ffff33;
-}
-
-/* ============================================================
-   NAVBAR — ReisDev (Clean Premium)
-   ============================================================ */
-.navbar {
-  background: rgba(20, 0, 40, 0.55);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 0, 255, 0.25);
-  padding: 0.7rem 0 !important;
+.accordion-button {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text-main);
   box-shadow: none !important;
 }
 
-/* Centralização */
-.navbar-collapse {
-  justify-content: center !important;
-  align-items: center;
+.accordion-button:not(.collapsed) {
+  background: var(--color-bg-secondary);
+  color: #fff;
 }
 
-.navbar-nav {
-  gap: 1.2rem;
-  flex-wrap: nowrap !important;
+.accordion-body {
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(0, 0, 0, 0.2);
 }
 
-/* Logo */
-.navbar-brand {
-  color: #fff !important;
-  font-size: 1.35rem;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
+/* ============================================================
+   RODAPÉ
+   ============================================================ */
+footer {
+  background: var(--color-dark);
+  border-top: 1px solid var(--glass-border);
+  margin-top: auto;
 }
 
-/* Links */
-.navbar .nav-link {
-  color: #fff !important;
-  font-weight: 500;
-  padding: 5px 10px;
-  transition: 0.25s;
-  opacity: 0.85;
-}
-
-.navbar .nav-link:hover,
-.navbar .nav-link.active {
-  opacity: 1;
-  color: var(--custom-accent-color) !important;
-  font-weight: 600;
-}
-
-/* Ícones */
-.navbar i {
-  font-size: 1.15rem;
-  transition: 0.25s;
-}
-
-.navbar i:hover {
-  color: var(--custom-accent-color);
+/* ============================================================
+   RESPONSIVIDADE
+   ============================================================ */
+@media (max-width: 768px) {
+  .shotkeys-img {
+    width: 90%;
+  }
+  
+  .navbar-collapse {
+    background: var(--color-bg-primary);
+    padding: 1rem;
+    border-radius: 0 0 15px 15px;
+    border: 1px solid var(--glass-border);
+    border-top: none;
+  }
 }
