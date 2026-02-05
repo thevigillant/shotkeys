@@ -224,6 +224,27 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1.5rem;
 }
 
+
+/* Generic Glass Panel */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  color: var(--color-text-main);
+}
+
+.text-accent {
+  color: var(--color-accent);
+}
+
+.bg-dark-transparent {
+    background-color: rgba(0,0,0,0.3) !important;
+}
+
 /* ============================================================
    FAQ / ACORDION
    ============================================================ */

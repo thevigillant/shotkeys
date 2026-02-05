@@ -27,33 +27,121 @@ $stmt->execute([$order_id]);
 $items = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
-<html lang="pt-br">
-<head><meta charset="UTF-8"><title>Pedido #<?= (int)$order['id'] ?></title></head>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Pedido #<?= (int)$order['id'] ?> | ShotKeys</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Base URL -->
+  <base href="https://shotkeys.store" />
+
+  <!-- FavIcon -->
+  <link rel="icon" href="assets/icons/favicon/logo-Shot-Keys.ico" type="image/x-icon" />
+
+  <!-- Google Fonts -->
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Momo+Trust+Display&display=swap");
+    @import url("https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap");
+    @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+  </style>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="assets/css/style.css?v=<?= time() ?>" />
+</head>
 <body>
-<h1>Pedido #<?= (int)$order['id'] ?></h1>
 
-<p>Status: <strong><?= htmlspecialchars($order['status']) ?></strong></p>
-<p>Total: R$ <?= number_format(((int)$order['total_cents'])/100, 2, ',', '.') ?></p>
-<p>Criado em: <?= htmlspecialchars($order['created_at']) ?></p>
+  <!-- Navbar Global -->
+  <?php include __DIR__ . '/includes/navbar.php'; ?>
 
-<h2>Itens</h2>
-<ul>
-<?php foreach ($items as $it): ?>
-  <li>
-    <?= htmlspecialchars($it['title']) ?>
-    (<?= htmlspecialchars($it['type']) ?>)
-    — <?= (int)$it['quantity'] ?>x
-    — R$ <?= number_format(((int)$it['unit_price_cents'])/100, 2, ',', '.') ?>
-  </li>
-<?php endforeach; ?>
-</ul>
+  <main class="container py-5" style="margin-top: 60px;">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="glass-panel">
+          <!-- Header do Pedido -->
+          <div class="d-flex flex-wrap justify-content-between align-items-center border-bottom border-secondary border-opacity-25 pb-4 mb-4">
+             <div>
+                <h1 class="h3 archivofont text-white mb-1">Pedido #<?= (int)$order['id'] ?></h1>
+                <span class="text-white-50 small">
+                  Criado em <?= date('d/m/Y H:i', strtotime($order['created_at'])) ?>
+                </span>
+             </div>
+             
+             <?php 
+               $statusClass = match($order['status']) {
+                   'PAID' => 'bg-success',
+                   'PENDING'  => 'bg-warning text-dark',
+                   default    => 'bg-secondary'
+               };
+               $statusLabel = match($order['status']) {
+                   'PAID' => 'Pago / Aprovado',
+                   'PENDING'  => 'Aguardando Pagamento',
+                   default    => $order['status']
+               };
+             ?>
+             <span class="badge <?= $statusClass ?> bg-opacity-75 rounded-pill px-3 py-2 fs-6">
+                <?= $statusLabel ?>
+             </span>
+          </div>
 
-<?php if ($order['status'] === 'PAID'): ?>
-  <p><strong>Pagamento aprovado.</strong> (Próximo passo: entrega automática)</p>
-<?php else: ?>
-  <p>Aguardando pagamento.</p>
-<?php endif; ?>
+          <!-- Lista de Itens -->
+          <h2 class="h5 text-white mb-3 fw-bold">Itens do Pedido</h2>
+          <div class="d-flex flex-column gap-3 mb-4">
+            <?php foreach ($items as $it): ?>
+              <div class="bg-dark-transparent p-3 rounded-3 d-flex justify-content-between align-items-center">
+                 <div>
+                    <strong class="d-block text-white"><?= htmlspecialchars($it['title']) ?></strong>
+                    <span class="badge bg-secondary opacity-75 small"><?= htmlspecialchars($it['type']) ?></span>
+                    <span class="text-white-50 small ms-2">Qtd: <?= (int)$it['quantity'] ?></span>
+                 </div>
+                 <div class="fw-bold text-accent">
+                    R$ <?= number_format(((int)$it['unit_price_cents'])/100, 2, ',', '.') ?>
+                 </div>
+              </div>
+            <?php endforeach; ?>
+          </div>
 
-<p><a href="meus_pedidos.php">Voltar</a></p>
+          <!-- Total e Resumo -->
+          <div class="d-flex justify-content-between align-items-center border-top border-secondary border-opacity-25 pt-4">
+             <span class="text-white h5">Total</span>
+             <span class="text-accent h3 archivofont">
+                R$ <?= number_format(((int)$order['total_cents'])/100, 2, ',', '.') ?>
+             </span>
+          </div>
+
+          <!-- Rodapé de Status e Ação -->
+          <div class="mt-4 p-3 rounded-3 bg-dark-transparent border border-secondary border-opacity-10 text-center">
+            <?php if ($order['status'] === 'PAID'): ?>
+              <p class="mb-0 text-success fw-bold">
+                 ✅ Pagamento aprovado! Sua key foi enviada para seu email (simulação).
+              </p>
+            <?php else: ?>
+              <p class="mb-3 text-warning">
+                 ⚠️ O pagamento ainda não foi confirmado.
+              </p>
+              <!-- Recuperar slug do primeiro produto para voltar ao checkout se precisar, 
+                   embora o ideal fosse ter um link direto de pagamento no pedido -->
+              <a href="checkout.php?product=random-indie-key" class="btn btn-custom btn-sm">
+                 Ir para Pagamento (Exemplo)
+              </a>
+            <?php endif; ?>
+          </div>
+
+        </div>
+
+        <div class="mt-4 text-center">
+           <a href="meus_pedidos.php" class="text-white-50 text-decoration-none small">&larr; Voltar para Meus Pedidos</a>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
 </body>
 </html>
