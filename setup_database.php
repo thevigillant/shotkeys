@@ -91,6 +91,8 @@ try {
             FOREIGN KEY (order_id) REFERENCES orders(id)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     ");
+    try { $pdo->exec("ALTER TABLE order_items ADD COLUMN title VARCHAR(255) NOT NULL AFTER product_id"); } catch (PDOException $e) {}
+    try { $pdo->exec("ALTER TABLE order_items ADD COLUMN type VARCHAR(50) DEFAULT 'OWN_KEY' AFTER unit_price_cents"); } catch (PDOException $e) {}
     echo "OK\n";
 
     // 6. Deliveries Table (NEW - Log/Audit)
