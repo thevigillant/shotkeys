@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors[] = 'E-mail inválido.';
   } else {
     try {
-      $stmt = $pdo->prepare('SELECT id, name, password_hash FROM users WHERE email = ? LIMIT 1');
+      $stmt = $pdo->prepare('SELECT id, name, password_hash, role FROM users WHERE email = ? LIMIT 1');
       $stmt->execute([$email]);
       $user = $stmt->fetch();
 
@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         session_regenerate_id(true);
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_name'] = $user['name'];
+        $_SESSION['user_role'] = $user['role'] ?? 'user';
 
         // Redireciona
         $to = 'dashboard.php';

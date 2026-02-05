@@ -37,15 +37,18 @@ if (empty($product['price_cents'])) {
 if (!isset($_SESSION['pending_order_for']) || $_SESSION['pending_order_for'] !== $slug) {
   $pdo->beginTransaction();
   try {
-    $stmt = $pdo->prepare("INSERT INTO orders (user_id, status, total_cents) VALUES (?, 'PENDING', ?)");
-    $stmt->execute([$_SESSION['user_id'], (int)$product['price_cents']]);
+    // Generate a Simulate Gateway ID
+    $gatewayId = 'PAY-' . strtoupper(bin2hex(random_bytes(8)));
+
+    $stmt = $pdo->prepare("INSERT INTO orders (user_id, status, total_cents, payment_gateway_id) VALUES (?, 'PENDING', ?, ?)");
+    $stmt->execute([$_SESSION['user_id'], (int)$product['price_cents'], $gatewayId]);
     $order_id = (int)$pdo->lastInsertId();
 
     $stmt = $pdo->prepare("
-      INSERT INTO order_items (order_id, product_id, quantity, unit_price_cents)
-      VALUES (?, ?, 1, ?)
+      INSERT INTO order_items (order_id, product_id, title, quantity, unit_price_cents, type)
+      VALUES (?, ?, ?, 1, ?, ?)
     ");
-    $stmt->execute([$order_id, (int)$product['id'], (int)$product['price_cents']]);
+    $stmt->execute([$order_id, (int)$product['id'], $product['title'], (int)$product['price_cents'], $product['type']]);
 
     $pdo->commit();
 

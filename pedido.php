@@ -114,19 +114,43 @@ $items = $stmt->fetchAll();
 
           <!-- Rodapé de Status e Ação -->
           <div class="mt-4 p-3 rounded-3 bg-dark-transparent border border-secondary border-opacity-10 text-center">
-            <?php if ($order['status'] === 'PAID'): ?>
-              <p class="mb-0 text-success fw-bold">
-                 ✅ Pagamento aprovado! Sua key foi enviada para seu email (simulação).
-              </p>
+             <?php if ($order['status'] === 'PAID' || $order['status'] === 'DELIVERED'): ?>
+              <div class="bg-success bg-opacity-10 border border-success border-opacity-25 p-4 rounded-3 animate-fade-in">
+                 <h3 class="h5 text-success mb-3">🎉 Compra Confirmada! Sua Key:</h3>
+                 
+                 <?php
+                    // Fetch the Key
+                    require_once __DIR__ . '/services/KeyService.php';
+                    $keyStmt = $pdo->prepare("SELECT key_encrypted FROM product_keys WHERE order_id = ? LIMIT 1");
+                    $keyStmt->execute([$order['id']]);
+                    $keyRow = $keyStmt->fetch();
+                    
+                    if ($keyRow):
+                        try {
+                            $decryptedKey = KeyService::decrypt($keyRow['key_encrypted']);
+                        } catch (Exception $e) {
+                            $decryptedKey = "Erro na decriptação. Contate suporte.";
+                        }
+                 ?>
+                    <div class="user-select-all font-monospace fs-4 fw-bold text-white bg-dark p-3 rounded border border-secondary mb-2 text-wrap" style="word-break: break-all;">
+                        <?= htmlspecialchars($decryptedKey) ?>
+                    </div>
+                    <p class="text-white-50 small mb-0">Esta chave é única e agora é sua.</p>
+                 <?php else: ?>
+                    <p class="text-warning">A chave está sendo alocada... Atualize a página em instantes.</p>
+                 <?php endif; ?>
+              </div>
             <?php else: ?>
               <p class="mb-3 text-warning">
                  ⚠️ O pagamento ainda não foi confirmado.
               </p>
               <!-- Recuperar slug do primeiro produto para voltar ao checkout se precisar, 
                    embora o ideal fosse ter um link direto de pagamento no pedido -->
-              <a href="checkout.php?product=random-indie-key" class="btn btn-custom btn-sm">
-                 Ir para Pagamento (Exemplo)
-              </a>
+              <input type="hidden" id="gw_id" value="<?= $order['payment_gateway_id'] ?>">
+              <form action="pay_simulate.php" method="POST">
+                  <input type="hidden" name="order_id" value="<?= $order['id'] ?>">
+                  <button type="submit" class="btn btn-custom btn-sm">Ir para Pagamento (Exemplo)</button>
+              </form>
             <?php endif; ?>
           </div>
 

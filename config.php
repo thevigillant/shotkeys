@@ -25,6 +25,10 @@ $DB_NAME = getenv('DB_NAME') ?: ($local_config['DB_NAME'] ?? '');
 $DB_USER = getenv('DB_USER') ?: ($local_config['DB_USER'] ?? '');
 $DB_PASS = getenv('DB_PASS') ?: ($local_config['DB_PASS'] ?? '');
 
+// Security Keys
+// ⚠️ IMPORTANT: Change this to a random 32-char string in production!
+define('ENCRYPTION_KEY', 'change_this_to_a_super_secret_key_32_chars_long!!'); 
+
 
 if ($DB_NAME === '' || $DB_USER === '') {
   http_response_code(500);
