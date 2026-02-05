@@ -58,7 +58,7 @@ if (!isset($_SESSION['pending_order_for']) || $_SESSION['pending_order_for'] !==
     $pdo->rollBack();
     error_log("CHECKOUT ERROR: " . $e->getMessage());
     http_response_code(500);
-    exit('Erro ao criar pedido.');
+    exit('Erro ao criar pedido: ' . $e->getMessage());
   }
 }
 
