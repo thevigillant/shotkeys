@@ -36,6 +36,26 @@ $orders = $stmt->fetchAll();
   
   <!-- Custom CSS -->
   <link rel="stylesheet" href="assets/css/style.css?v=<?= time() ?>" />
+
+  <style>
+    .order-item {
+      transition: transform 0.2s ease, background 0.2s ease;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+    }
+    .order-item:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.08) !important;
+      border-color: var(--color-accent) !important;
+    }
+    .status-badge {
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+  </style>
 </head>
 <body>
 
@@ -43,69 +63,91 @@ $orders = $stmt->fetchAll();
   <?php include __DIR__ . '/includes/navbar.php'; ?>
 
   <main class="container py-5" style="margin-top: 60px;">
-    <div class="glass-panel">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h2 archivofont mb-0 text-white">Meus Pedidos</h1>
-        <a href="produtos.php" class="btn btn-sm btn-outline-light rounded-pill">Novo Pedido</a>
+    
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-5 gap-3">
+      <div>
+        <h1 class="h2 archivofont mb-1 text-white">HISTÓRICO DE PEDIDOS</h1>
+        <p class="text-white-50 mb-0">Gerencie suas compras e acesse suas chaves.</p>
+      </div>
+      <a href="produtos.php" class="btn btn-custom shadow-lg">
+        <span class="me-2">+</span>Novo Pedido
+      </a>
+    </div>
+
+    <?php if (!$orders): ?>
+      <div class="glass-panel text-center py-5">
+          <div class="mb-3 opacity-50">
+             <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          </div>
+          <h3 class="h4 text-white mb-3">Você ainda não tem nenhum loot!</h3>
+          <p class="text-white-50 mb-4" style="max-width: 400px; margin: 0 auto;">Assim que você garantir sua primeira key ou random box, ela aparecerá aqui instantaneamente.</p>
+          <a href="produtos.php" class="btn btn-outline-light rounded-pill px-4">Explorar Loja</a>
+      </div>
+    <?php else: ?>
+      
+      <div class="d-flex flex-column gap-3">
+        <?php foreach ($orders as $o): ?>
+          <?php 
+            $statusClass = match($o['status']) {
+                'PAID' => 'bg-success text-white',
+                'PENDING'  => 'bg-warning text-dark',
+                default    => 'bg-secondary text-white'
+            };
+            $statusLabel = match($o['status']) {
+                'PAID' => 'Aprovado',
+                'PENDING'  => 'Pendente',
+                default    => $o['status']
+            };
+            $borderClass = $o['status'] === 'PENDING' ? 'border-warning' : 'border-secondary';
+          ?>
+          
+          <a href="pedido.php?id=<?= (int)$o['id'] ?>" class="order-item glass-panel p-4 rounded-4 border border-opacity-25 <?= $borderClass ?>" style="min-height: auto;">
+            <div class="row align-items-center g-3">
+              
+              <!-- ID e Data -->
+              <div class="col-6 col-md-2">
+                 <span class="d-block text-white-50 small mb-1">PEDIDO</span>
+                 <span class="h5 fw-bold text-white mb-0">#<?= str_pad((string)$o['id'], 4, '0', STR_PAD_LEFT) ?></span>
+              </div>
+              
+              <div class="col-6 col-md-3">
+                 <span class="d-block text-white-50 small mb-1">DATA</span>
+                 <span class="text-white"><?= date('d M Y, H:i', strtotime($o['created_at'])) ?></span>
+              </div>
+
+              <!-- Valor -->
+              <div class="col-6 col-md-3">
+                 <span class="d-block text-white-50 small mb-1">TOTAL</span>
+                 <span class="fw-bold text-accent h5 mb-0">R$ <?= number_format(((int)$o['total_cents'])/100, 2, ',', '.') ?></span>
+              </div>
+
+              <!-- Status -->
+              <div class="col-6 col-md-2 text-md-center">
+                 <span class="status-badge badge rounded-pill px-3 py-2 <?= $statusClass ?> bg-opacity-75">
+                    <?= $statusLabel ?>
+                 </span>
+              </div>
+
+              <!-- Icone Seta -->
+              <div class="col-12 col-md-2 text-end d-none d-md-block">
+                 <div class="btn btn-icon btn-sm btn-outline-light rounded-circle p-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                 </div>
+              </div>
+
+            </div>
+          </a>
+        <?php endforeach; ?>
       </div>
 
-      <?php if (!$orders): ?>
-        <div class="text-center py-5">
-           <p class="text-white-50 mb-4">Você ainda não realizou nenhuma compra.</p>
-           <a href="produtos.php" class="btn btn-custom">Explorar Loja</a>
-        </div>
-      <?php else: ?>
-        <div class="table-responsive">
-           <table class="table table-dark table-hover align-middle mb-0" style="background: transparent;">
-             <thead>
-               <tr class="text-uppercase small text-white-50">
-                 <th scope="col" class="py-3">Pedido #</th>
-                 <th scope="col" class="py-3">Data</th>
-                 <th scope="col" class="py-3">Total</th>
-                 <th scope="col" class="py-3">Status</th>
-                 <th scope="col" class="py-3 text-end">Ações</th>
-               </tr>
-             </thead>
-             <tbody class="border-top-0">
-               <?php foreach ($orders as $o): ?>
-                 <?php 
-                   $statusClass = match($o['status']) {
-                       'PAID' => 'text-success',
-                       'PENDING'  => 'text-warning',
-                       default    => 'text-secondary'
-                   };
-                   $statusLabel = match($o['status']) {
-                       'PAID' => 'Pago',
-                       'PENDING'  => 'Pendente',
-                       default    => $o['status']
-                   };
-                 ?>
-                 <tr>
-                   <td class="py-3 fw-bold text-white">#<?= (int)$o['id'] ?></td>
-                   <td class="py-3 text-white-50"><?= date('d/m/Y H:i', strtotime($o['created_at'])) ?></td>
-                   <td class="py-3 text-white">R$ <?= number_format(((int)$o['total_cents'])/100, 2, ',', '.') ?></td>
-                   <td class="py-3">
-                     <span class="badge bg-dark border border-secondary <?= $statusClass ?> bg-opacity-50 rounded-pill px-3">
-                       <?= $statusLabel ?>
-                     </span>
-                   </td>
-                   <td class="py-3 text-end">
-                     <a href="pedido.php?id=<?= (int)$o['id'] ?>" class="btn btn-sm btn-outline-light rounded-pill">
-                       Ver Detalhes
-                     </a>
-                   </td>
-                 </tr>
-               <?php endforeach; ?>
-             </tbody>
-           </table>
-        </div>
-      <?php endif; ?>
-      
-    </div>
+    <?php endif; ?>
     
-    <div class="mt-4 text-center">
-       <a href="dashboard.php" class="text-white-50 text-decoration-none small">&larr; Voltar ao Painel</a>
+    <div class="mt-5 text-center">
+       <a href="dashboard.php" class="text-white-50 text-decoration-none small hover-link">
+         &larr; Voltar para o Dashboard
+       </a>
     </div>
+
   </main>
 
   <!-- Bootstrap JS -->
