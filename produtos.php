@@ -2,8 +2,9 @@
 require __DIR__ . '/config.php';
 
 // Busca produtos do banco
+// REMOVED 'image_url' to avoid SQL errors if column does not exist
 $stmt = $pdo->query("
-  SELECT id, slug, title, description, type, price_cents, affiliate_url, image_url
+  SELECT id, slug, title, description, type, price_cents, affiliate_url
   FROM products
   WHERE status = 'ACTIVE'
   ORDER BY created_at DESC
@@ -38,8 +39,8 @@ $products = $stmt->fetchAll();
     crossorigin="anonymous"
   />
 
-  <!-- CSS Principal -->
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <!-- CSS Principal - Versionado para evitar cache -->
+  <link rel="stylesheet" href="assets/css/style.css?v=<?= time() ?>" />
   
   <style>
     /* Ajuste específico para a página de produtos */
@@ -76,8 +77,11 @@ $products = $stmt->fetchAll();
             <div class="product-card h-100">
               <!-- Imagem (Fallback se não tiver url) -->
               <?php 
-                $imgUrl = !empty($p['image_url']) ? $p['image_url'] : 'assets/keys/glock/glock.png'; 
-                // Fallback simples para imagens locais se o DB tiver caminhos relativos ou absolutos
+                // Usando somente fallback por enquanto para garantir robustez
+                $imgUrl = 'assets/keys/glock/glock.png';
+                if (isset($p['image_url']) && !empty($p['image_url'])) {
+                    $imgUrl = $p['image_url'];
+                }
               ?>
               <img
                 src="<?= htmlspecialchars($imgUrl) ?>"
