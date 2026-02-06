@@ -2,7 +2,7 @@
 require __DIR__ . '/config.php';
 require_login();
 
-$orderId = $_POST['order_id'] ?? 0;
+$orderId = $_GET['order_id'] ?? $_POST['order_id'] ?? 0;
 if (!$orderId) {
     die("Pedido invalido.");
 }
