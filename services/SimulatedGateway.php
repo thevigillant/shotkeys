@@ -20,6 +20,6 @@ class SimulatedGateway implements PaymentGateway {
 
         // Return the Simulation Page URL
         // In real world, this would return 'https://mercadopago.com/checkout/...'
-        return "pay_simulate.php?order_id={$orderId}&tx={$txId}";
+        return "payment_simulate.php?order_id={$orderId}&tx={$txId}";
     }
 }

@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg fixed-top">
   <div class="container">
-    <a class="navbar-brand archivofont" href="index.html">
+    <a class="navbar-brand archivofont" href="index.php">
       ShotKeys
     </a>
 
@@ -19,10 +19,10 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fs-5 archivofont">
         <li class="nav-item">
-          <a class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'index.html' ? 'active' : '' ?>" href="index.html">Início</a>
+          <a class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : '' ?>" href="index.php">Início</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'produtos.php' ? 'active' : '' ?>" href="produtos.php">Produtos</a>
+          <a class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'products.php' ? 'active' : '' ?>" href="products.php">Produtos</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">FAQ</a>
@@ -51,7 +51,7 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="userDropdown">
               <li><a class="dropdown-item" href="dashboard.php">Minha Conta</a></li>
-              <li><a class="dropdown-item" href="meus_pedidos.php">Meus Pedidos</a></li>
+              <li><a class="dropdown-item" href="my_orders.php">Meus Pedidos</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item text-danger" href="logout.php">Sair</a></li>
             </ul>

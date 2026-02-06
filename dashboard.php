@@ -64,7 +64,7 @@ require_login();
              <p class="text-white-50 small mb-4">
                Acompanhe o status das suas compras e acesse suas chaves de ativação.
              </p>
-             <a href="meus_pedidos.php" class="btn btn-outline-light w-100 rounded-pill">Ver histórico</a>
+             <a href="my_orders.php" class="btn btn-outline-light w-100 rounded-pill">Ver histórico</a>
           </div>
         </div>
 
@@ -78,7 +78,7 @@ require_login();
              <p class="text-white-50 small mb-4">
                Explore o catálogo e encontre novos jogos para sua coleção.
              </p>
-             <a href="produtos.php" class="btn btn-custom w-100">Explorar Loja</a>
+             <a href="products.php" class="btn btn-custom w-100">Explorar Loja</a>
           </div>
         </div>
 

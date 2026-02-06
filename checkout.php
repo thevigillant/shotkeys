@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
              </div>
           </div>
 
-          <form method="POST" action="pay_simulate.php">
+          <form method="POST" action="payment_simulate.php">
             <input type="hidden" name="order_id" value="<?= $order_id ?>">
             <button type="submit" class="btn btn-custom w-100 btn-lg shadow-lg">
                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </form>
 
           <div class="mt-4">
-            <a href="meus_pedidos.php" class="text-white-50 text-decoration-none small hover-link">
+            <a href="my_orders.php" class="text-white-50 text-decoration-none small hover-link">
                &larr; Cancelar e voltar para Meus Pedidos
             </a>
           </div>

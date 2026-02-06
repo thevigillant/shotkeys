@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="ShotKeys - Chaves de jogos com entrega imediata e preços imbatíveis.">
+    <title>ShotKeys | Dispare sua Sorte</title>
+
+    <!-- Base URL -->
+    <base href="https://shotkeys.store" />
+
+    <!-- Google Fonts -->
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Momo+Trust+Display&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+    </style>
+
+    <!-- FavIcon -->
+    <link
+      rel="icon"
+      href="assets/icons/favicon/logo-Shot-Keys.ico"
+      type="image/x-icon"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+
+    <!-- CSS Principal -->
+    <link rel="stylesheet" href="assets/css/style.css?v=2" />
+  </head>
+
+  <body>
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+      <div class="container">
+        <a class="navbar-brand archivofont" href="index.php">
+          ShotKeys
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Alternar navegação"
+        >
+          <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fs-5 archivofont">
+            <li class="nav-item">
+              <a class="nav-link active" href="index.php">Início</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="products.php">Produtos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">FAQ</a>
+            </li>
+          </ul>
+
+          <div class="d-flex align-items-center gap-3">
+            <a href="#" class="text-white" aria-label="Carrinho">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+              </svg>
+            </a>
+            <a href="register.php" class="text-white" aria-label="Perfil">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ================= SEÇÃO PRINCIPAL (HERO) ================= -->
+    <main class="hero-wrapper px-3">
+      <img
+        src="assets/images/bem vindo Shot Keys.png"
+        alt="Bem-vindo à Shot Keys"
+        class="img-fluid shotkeys-img mb-4"
+      />
+
+      <p class="text-white fs-4 robotofont mb-5" style="max-width: 600px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
+        Do Caos à Glória: Dispare sua sorte e garanta os melhores jogos com entrega imediata.
+      </p>
+
+      <a href="products.php" class="btn btn-custom btn-lg">
+        Explorar Produtos
+      </a>
+    </main>
+
+    <!-- ================= PRODUTOS EM DESTAQUE ================= -->
+    <section class="container mb-5 pb-5">
+      <div class="row text-center mb-4">
+        <div class="col">
+           <h2 class="archivofont text-uppercase" style="color: var(--color-accent); letter-spacing: 2px;">Destaques</h2>
+        </div>
+      </div>
+
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        <!-- Produto 1 -->
+        <div class="col">
+          <div class="product-card text-center">
+            <img
+              src="assets/keys/glock/glock.png"
+              alt="Glock Key - Skin CS:GO/CS2"
+              loading="lazy"
+            />
+            <div class="card-body">
+              <div>
+                <h5 class="card-title">Glock Key</h5>
+                <p class="card-text">
+                  Precisão e leveza. A escolha certa para começar com vantagem.
+                </p>
+              </div>
+              <a href="#" class="btn btn-custom w-100">Comprar</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Produto 2 -->
+        <div class="col">
+          <div class="product-card text-center">
+            <img
+              src="assets/keys/ak47/keyak47.png"
+              alt="AK-47 Key - Skin CS:GO/CS2"
+              loading="lazy"
+            />
+            <div class="card-body">
+              <div>
+                <h5 class="card-title">AK-47 Key</h5>
+                <p class="card-text">
+                  Poder de fogo bruto. Domine o campo de batalha.
+                </p>
+              </div>
+              <a href="#" class="btn btn-custom w-100">Comprar</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Produto 3 -->
+        <div class="col">
+          <div class="product-card text-center">
+             <img
+              src="assets/keys/awp/awp.png"
+              alt="AWP Key - Skin CS:GO/CS2"
+              loading="lazy"
+            />
+            <div class="card-body">
+              <div>
+                <h5 class="card-title">AWP Key</h5>
+                <p class="card-text">
+                  Um tiro, uma vitória. O clássico para os estrategistas.
+                </p>
+              </div>
+              <a href="#" class="btn btn-custom w-100">Comprar</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FAQ RÁPIDO ================= -->
+     <section class="container mb-5" style="max-width: 800px;">
+       <h3 class="archivofont text-center mb-4 text-white">Perguntas Frequentes</h3>
+       <div class="accordion" id="accordionFaq">
+         <div class="accordion-item">
+           <h2 class="accordion-header">
+             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+               A entrega dos produtos é imediata?
+             </button>
+           </h2>
+           <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFaq">
+             <div class="accordion-body">
+               Sim! Nosso sistema automatizado envia sua key imediatamente após a confirmação do pagamento.
+             </div>
+           </div>
+         </div>
+       </div>
+     </section>
+
+
+    <!-- ================= RODAPÉ ================= -->
+    <footer class="text-center text-white py-4">
+      <div class="container">
+        <p class="robotofont mb-2">
+          © 2025 ShotKeys. Todos os direitos reservados.
+        </p>
+        <small class="text-muted">Desenvolvido com tecnologia de ponta.</small>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
