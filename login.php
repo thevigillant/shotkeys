@@ -10,25 +10,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors[] = 'E-mail inválido.';
   } else {
     try {
-      $stmt = $pdo->prepare('SELECT id, name, password_hash, role FROM users WHERE email = ? LIMIT 1');
-      $stmt = $pdo->prepare('SELECT id, name, password_hash, role, active FROM users WHERE email = ? LIMIT 1');
+      // Use a safer query that works even if active column is missing
+      // We will fetch *, but handle missing keys in PHP
+      $stmt = $pdo->prepare('SELECT * FROM users WHERE email = ? LIMIT 1');
       $stmt->execute([$email]);
       $user = $stmt->fetch();
 
-      if (!$user || !password_verify($password, $user['password_hash'])) {
-        $errors[] = 'E-mail ou senha incorretos.';
-      } else {
+      if ($user && password_verify($password, $user['password_hash'])) {
+        
         // CHECK IF BLOCKED
-        if (isset($user['active']) && $user['active'] == 0) {
+        // Bypass block for the main admin
+        $isMainAdmin = ($email === 'brunosantanareisfc@gmail.com');
+        $isActive = $user['active'] ?? 1; // Default to 1 (active) if column missing
+
+        if (!$isMainAdmin && $isActive == 0) {
              $errors[] = "🚫 Sua conta foi desativada pelo administrador. Entre em contato com o suporte.";
         } else {
-            // Iniciar a sessão, se ainda não estiver iniciada
-            
+            // Login Success
             session_regenerate_id(true);
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_name'] = $user['name'];
             $_SESSION['user_role'] = $user['role'] ?? 'user';
-            $_SESSION['user_email'] = $user['email']; // Added user_email
+            $_SESSION['user_email'] = $user['email'];
 
             // Generate CSRF Token
             if (empty($_SESSION['csrf_token'])) {
@@ -43,6 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header("Location: $to");
             exit;
         }
+      } else {
+        $errors[] = 'E-mail ou senha incorretos.';
       }
     } catch (PDOException $e) {
       error_log("Database error during login: " . $e->getMessage());
