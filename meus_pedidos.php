@@ -55,20 +55,38 @@ $orders = $stmt->fetchAll();
       text-transform: uppercase;
       font-weight: 700;
     }
-    /* Accordion Overrides */
+    /* Accordion Customization */
+    .accordion-item {
+        background: rgba(20, 20, 35, 0.6) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        margin-bottom: 1rem;
+        border-radius: 12px !important;
+        overflow: hidden;
+    }
     .accordion-button {
-        background-color: transparent !important;
+        background: transparent !important;
         color: #fff !important;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 500;
+        box-shadow: none !important;
     }
     .accordion-button:not(.collapsed) {
-        background-color: rgba(255, 255, 255, 0.05) !important;
-        box-shadow: none !important;
+        background: rgba(188, 19, 254, 0.1) !important;
+        border-bottom: 1px solid rgba(188, 19, 254, 0.3);
     }
     .accordion-button::after {
         filter: invert(1);
+        transform: scale(0.8);
     }
-    .accordion-item {
-        background-color: transparent !important;
+    .accordion-body {
+        background: rgba(0, 0, 0, 0.2);
+        color: #ccc;
+    }
+    .order-summary-title {
+        color: var(--neon-blue);
+        font-weight: bold;
+        letter-spacing: 0.5px;
     }
   </style>
 </head>
