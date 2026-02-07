@@ -58,6 +58,29 @@ if (isset($_GET['delete'])) {
     }
 }
 
+// AUTO-REPAIR: Force check for new columns to prevent "Column not found" errors
+try {
+    // 1. Check/Add 'category'
+    $cols = $pdo->query("SHOW COLUMNS FROM products LIKE 'category'")->fetchAll();
+    if (count($cols) == 0) {
+        $pdo->exec("ALTER TABLE products ADD COLUMN category VARCHAR(50) DEFAULT 'Geral'");
+    }
+
+    // 2. Check/Add 'image_url'
+    $cols = $pdo->query("SHOW COLUMNS FROM products LIKE 'image_url'")->fetchAll();
+    if (count($cols) == 0) {
+        $pdo->exec("ALTER TABLE products ADD COLUMN image_url VARCHAR(255) DEFAULT NULL");
+    }
+
+    // 3. Check/Add 'affiliate_url'
+    $cols = $pdo->query("SHOW COLUMNS FROM products LIKE 'affiliate_url'")->fetchAll();
+    if (count($cols) == 0) {
+        $pdo->exec("ALTER TABLE products ADD COLUMN affiliate_url VARCHAR(255) DEFAULT NULL");
+    }
+} catch (Exception $e) {
+    // Silent fail or log if needed
+}
+
 // Fetch All Products
 $products = $pdo->query("SELECT * FROM products ORDER BY id DESC")->fetchAll();
 ?>

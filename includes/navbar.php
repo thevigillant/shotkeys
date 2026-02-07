@@ -59,7 +59,7 @@
                   <li><hr class="dropdown-divider"></li>
               <?php endif; ?>
               <li><a class="dropdown-item" href="dashboard.php">Minha Conta</a></li>
-              <li><a class="dropdown-item" href="my_orders.php">Meus Pedidos</a></li>
+              <li><a class="dropdown-item" href="meus_pedidos.php">Meus Pedidos</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item text-danger" href="logout.php">Sair</a></li>
             </ul>
