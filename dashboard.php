@@ -1,6 +1,17 @@
 <?php
 require __DIR__ . '/config.php';
 require_login();
+
+// FORCE REFRESH ROLE: Ensure session matches DB (in case of manual promotion)
+if (is_logged_in()) {
+    $stmt = $pdo->prepare("SELECT role, name FROM users WHERE id = ?");
+    $stmt->execute([$_SESSION['user_id']]);
+    $user = $stmt->fetch();
+    if ($user) {
+        $_SESSION['user_role'] = $user['role'];
+        $_SESSION['user_name'] = $user['name'];
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">

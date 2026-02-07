@@ -52,8 +52,8 @@
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="userDropdown">
               <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
                   <li>
-                      <a class="dropdown-item fw-bold" href="admin/dashboard.php" style="color: #00f3ff; text-shadow: 0 0 5px rgba(0,243,255,0.5);">
-                          👑 Painel Admin
+                      <a class="dropdown-item fw-bold text-uppercase" href="admin/dashboard.php" style="color: #00f3ff !important; background: rgba(0, 243, 255, 0.1); border-left: 3px solid #00f3ff; margin-bottom: 5px;">
+                          🚀 PAINEL ADMIN
                       </a>
                   </li>
                   <li><hr class="dropdown-divider"></li>
