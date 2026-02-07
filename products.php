@@ -7,26 +7,36 @@ require __DIR__ . '/config.php';
 $category = $_GET['category'] ?? '';
 $search = $_GET['search'] ?? '';
 
-$sql = "SELECT id, slug, title, description, type, price_cents, affiliate_url, category, image_url 
-        FROM products 
-        WHERE status = 'ACTIVE'";
-$params = [];
+// Try to fetch with new columns (Preferred)
+try {
+    $sql = "SELECT id, slug, title, description, type, price_cents, affiliate_url, category, image_url 
+            FROM products 
+            WHERE status = 'ACTIVE'";
+    $params = [];
 
-if ($category) {
-    $sql .= " AND category = ?";
-    $params[] = $category;
+    if ($category) {
+        $sql .= " AND category = ?";
+        $params[] = $category;
+    }
+
+    if ($search) {
+        $sql .= " AND title LIKE ?";
+        $params[] = "%$search%";
+    }
+
+    $sql .= " ORDER BY created_at DESC";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+    $products = $stmt->fetchAll();
+
+} catch (PDOException $e) {
+    // FALLBACK: If columns 'category' or 'image_url' don't exist yet
+    // This prevents the 500 Error
+    $stmt = $pdo->prepare("SELECT id, slug, title, description, type, price_cents, affiliate_url FROM products WHERE status = 'ACTIVE' ORDER BY created_at DESC");
+    $stmt->execute();
+    $products = $stmt->fetchAll();
 }
-
-if ($search) {
-    $sql .= " AND title LIKE ?";
-    $params[] = "%$search%";
-}
-
-$sql .= " ORDER BY created_at DESC";
-
-$stmt = $pdo->prepare($sql);
-$stmt->execute($params);
-$products = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -119,7 +129,6 @@ $products = $stmt->fetchAll();
   </section>
 
   <!-- Grid de Produtos -->
-  <main class="container pb-5">
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
       
       <?php if (count($products) > 0): ?>
