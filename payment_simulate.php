@@ -122,12 +122,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_payment'])) {
                         $valor
                     );
                     
-                    // URL encoded payload for QR API
-                    $qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" . urlencode($payloadPix);
-                    ?>
-
-                    <!-- QR Code Oficial -->
-                    <img src="<?= $qrUrl ?>" alt="QR Code Pix" class="img-fluid mb-2" style="max-width: 200px;">
+                    <!-- QR Code Oficial (JS Generated for Reliability) -->
+                    <div id="qrcode-container" class="d-flex justify-content-center mb-3 p-2 bg-white rounded"></div>
                     
                     <div class="mt-2 text-start p-2 border rounded bg-light">
                         <small class="d-block text-muted fw-bold mb-1">Copia e Cola (Chave Completa):</small>
@@ -150,14 +146,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_payment'])) {
                     </div>
                 </div>
 
+                <!-- QRCode.js Library (CDN) -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
                 <script>
-                function copyPix() {
-                    var copyText = document.getElementById("pixCopyPaste");
-                    copyText.select();
-                    copyText.setSelectionRange(0, 99999); 
-                    navigator.clipboard.writeText(copyText.value);
-                    alert("Código Pix copiado!");
-                }
+                    // Generate QR Code on client side to avoid URL length limits
+                    var qrcode = new QRCode(document.getElementById("qrcode-container"), {
+                        text: "<?= $payloadPix ?>",
+                        width: 200,
+                        height: 200,
+                        colorDark : "#000000",
+                        colorLight : "#ffffff",
+                        correctLevel : QRCode.CorrectLevel.M
+                    });
+
+                    function copyPix() {
+                        var copyText = document.getElementById("pixCopyPaste");
+                        copyText.select();
+                        copyText.setSelectionRange(0, 99999); 
+                        navigator.clipboard.writeText(copyText.value);
+                        alert("Código Pix copiado! Abra seu app e pague.");
+                    }
                 </script>
 
                 <!-- Amount -->
