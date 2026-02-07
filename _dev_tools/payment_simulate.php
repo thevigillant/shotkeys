@@ -181,18 +181,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_payment'])) {
                     R$ <?= number_format($order['total_cents']/100, 2, ',', '.') ?>
                 </h2>
 
-                <!-- Loading State (Fake) -->
-                <div id="connecting" class="mb-4">
-                    <div class="bank-loader"></div>
-                    <p class="text-white small animate-pulse">Conectando ao banco...</p>
-                </div>
-
-                <!-- Action Controls (Hidden initially) -->
-                <div id="controls" style="display:none; opacity: 0; transition: opacity 0.5s;">
+                <!-- Action Controls -->
+                <div id="controls" class="mt-4">
                     <button onclick="approvePayment()" class="btn btn-success btn-lg w-100 mb-3 py-3 shadow-lg fw-bold">
-                        ✅ APROVAR PAGAMENTO
+                        ✅ APROVAR PAGAMENTO SIMULADO
                     </button>
-                    <a href="checkout.php?cancel=true" class="btn btn-outline-danger w-100 btn-sm">
+                    <a href="../pedido.php?id=<?= $orderId ?>" class="btn btn-outline-danger w-100 btn-sm">
                         Cancelar Operação
                     </a>
                 </div>
@@ -207,12 +201,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_payment'])) {
   </div>
 
   <script>
-    // Display controls immediately to prevent "infinite loading"
-    document.getElementById('connecting').style.display = 'none';
-    const controls = document.getElementById('controls');
-    controls.style.display = 'block';
-    controls.style.opacity = '1';
-
     // Simulate finding the payment details (Fallback just in case)
     /*
     window.addEventListener('load', function() {
