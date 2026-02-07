@@ -99,21 +99,66 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_payment'])) {
                 </div>
 
                 <!-- QR Code & Pix Info -->
+                <!-- QR Code & Pix Info -->
                 <div class="mb-4 bg-white rounded p-3 text-dark">
                     <h5 class="fw-bold mb-2">Pague via Pix</h5>
                     
-                    <!-- QR Code (Generating a generic one for the key) -->
-                    <!-- In a real app, use a library to generate the EMVCo payload -->
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=02060330602" alt="QR Code Pix" class="img-fluid mb-2">
+                    <?php
+                    // Gerar Payload Pix Válido
+                    require_once __DIR__ . '/services/PixService.php';
+                    
+                    // Dados do Recebedor (Você)
+                    $pixKeyProprio = '02060330602'; // CPF Limpo
+                    $nomeRecebedor = 'Bruno S'; // Nome curto (max 25 chars)
+                    $cidadeRecebedor = 'BRASILIA'; // Cidade (max 15 chars)
+                    $valor = ((float)$order['total_cents']) / 100;
+                    
+                    $payloadPix = PixService::createPayload(
+                        $pixKeyProprio, 
+                        "PEDIDO " . $orderId, 
+                        $nomeRecebedor, 
+                        $cidadeRecebedor, 
+                        "SHOTKEYS" . $orderId, 
+                        $valor
+                    );
+                    
+                    // URL encoded payload for QR API
+                    $qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" . urlencode($payloadPix);
+                    ?>
+
+                    <!-- QR Code Oficial -->
+                    <img src="<?= $qrUrl ?>" alt="QR Code Pix" class="img-fluid mb-2" style="max-width: 200px;">
                     
                     <div class="mt-2 text-start p-2 border rounded bg-light">
-                        <small class="d-block text-muted fw-bold">Chave Pix (CPF):</small>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="fs-5 fw-bold text-break" style="letter-spacing: 1px;">020.603.306-02</span>
+                        <small class="d-block text-muted fw-bold mb-1">Copia e Cola (Chave Completa):</small>
+                        
+                        <div class="input-group mb-2">
+                            <input type="text" class="form-control form-control-sm" value="<?= htmlspecialchars($payloadPix) ?>" id="pixCopyPaste" readonly style="font-size: 0.8rem;">
+                            <button class="btn btn-outline-secondary btn-sm" type="button" onclick="copyPix()">Copiar</button>
                         </div>
-                        <small class="d-block text-muted mt-1">Banco: Nubank</small>
+
+                        <div class="d-flex justify-content-between align-items-center mt-2 border-top pt-2">
+                             <div class="lh-1">
+                                <small class="d-block text-muted" style="font-size: 0.75rem;">Beneficiário</small>
+                                <span class="fw-bold text-uppercase"><?= $nomeRecebedor ?></span>
+                             </div>
+                             <div class="lh-1 text-end">
+                                <small class="d-block text-muted" style="font-size: 0.75rem;">CPF</small>
+                                <span class="fw-bold">***.603.306-**</span>
+                             </div>
+                        </div>
                     </div>
                 </div>
+
+                <script>
+                function copyPix() {
+                    var copyText = document.getElementById("pixCopyPaste");
+                    copyText.select();
+                    copyText.setSelectionRange(0, 99999); 
+                    navigator.clipboard.writeText(copyText.value);
+                    alert("Código Pix copiado!");
+                }
+                </script>
 
                 <!-- Amount -->
                 <h2 class="display-3 fw-bold text-white mb-5">
