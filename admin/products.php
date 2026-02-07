@@ -243,10 +243,12 @@ function toggleForm() {
     var form = document.getElementById('productForm');
     if (form.style.display === 'none' || form.style.display === '') {
         form.style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
         form.style.display = 'none';
         document.getElementById('f_id').value = ''; 
-        document.forms[0].reset();
+        // Reset form fields manually to avoid index issues
+        document.querySelectorAll('#productForm input, #productForm select, #productForm textarea').forEach(i => i.value = '');
     }
 }
 
