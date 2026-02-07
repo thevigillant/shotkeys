@@ -105,23 +105,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_payment'])) {
                     
                     <?php
                     // Gerar Payload Pix Válido
-                    require_once __DIR__ . '/services/PixService.php';
+                    // Use __DIR__ to ensure correct path relative to this file
+                    $pixServicePath = __DIR__ . '/services/PixService.php';
                     
-                    // Dados do Recebedor (Você)
-                    $pixKeyProprio = '02060330602'; // CPF Limpo
-                    $nomeRecebedor = 'Bruno S'; // Nome curto (max 25 chars)
-                    $cidadeRecebedor = 'BRASILIA'; // Cidade (max 15 chars)
-                    $valor = ((float)$order['total_cents']) / 100;
-                    
-                    $payloadPix = PixService::createPayload(
-                        $pixKeyProprio, 
-                        "PEDIDO " . $orderId, 
-                        $nomeRecebedor, 
-                        $cidadeRecebedor, 
-                        "SHOTKEYS" . $orderId, 
-                        $valor
-                    );
-                    
+                    if (!file_exists($pixServicePath)) {
+                        echo "<p class='text-danger'>Erro: Arquivo PixService.php não encontrado.</p>";
+                        $payloadPix = "Erro: PixService.php não encontrado."; // Default value to prevent errors later
+                    } else {
+                        require_once $pixServicePath;
+                        
+                        // Dados do Recebedor (Você)
+                        $pixKeyProprio = '02060330602'; // CPF Limpo
+                        $nomeRecebedor = 'Bruno S'; // Nome curto (max 25 chars)
+                        $cidadeRecebedor = 'BRASILIA'; // Cidade (max 15 chars)
+                        $valor = ((float)$order['total_cents']) / 100;
+                        
+                        $payloadPix = PixService::createPayload(
+                            $pixKeyProprio, 
+                            "PEDIDO " . $orderId, 
+                            $nomeRecebedor, 
+                            $cidadeRecebedor, 
+                            "SHOTKEYS" . $orderId, 
+                            $valor
+                        );
+                    }
+                    ?>
                     <!-- QR Code Oficial (JS Generated for Reliability) -->
                     <div id="qrcode-container" class="d-flex justify-content-center mb-3 p-2 bg-white rounded"></div>
                     

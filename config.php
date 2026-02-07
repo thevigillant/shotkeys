@@ -47,10 +47,10 @@ try {
     ]
   );
 } catch (Throwable $e) {
-  // Production: Log error and show generic message
-  error_log('DB connection error: ' . $e->getMessage());
-  http_response_code(500);
-  exit('Erro ao conectar ao banco de dados.');
+  // DEBUG MODE: Show exact error to fix connection or other runtime issues
+  ini_set('display_errors', 1);
+  error_reporting(E_ALL);
+  die("<h1>Erro de Servidor (Debug)</h1><p>" . $e->getMessage() . "</p><p>Trace: " . $e->getTraceAsString() . "</p>");
 }
 
 function is_logged_in(): bool {
