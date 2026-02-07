@@ -253,11 +253,52 @@ if (empty($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
       </div>
     </div>
 
+    <!-- Recent Activity Section -->
+    <h2 class="header-title" style="font-size: 1.5rem; margin-top: 3rem;">ATIVIDADE RECENTE</h2>
+    
     <div class="config-panel">
-      <h3 style="color: var(--neon-blue); margin-bottom: 1.5rem; font-family: 'Orbitron'">Acesso Rápido</h3>
-      <p style="color: rgba(255,255,255,0.7)">
-        Bem-vindo ao painel de controle ShotKeys. Utilize o menu lateral para configurar o modelo de e-mail e gerenciar produtos.
-      </p>
+      <?php
+        // Fetch last 10 'PAID' orders with User info
+        $stmt = $pdo->query("
+            SELECT o.id, o.total_cents, o.created_at, u.name as user_name, u.email as user_email 
+            FROM orders o
+            JOIN users u ON o.user_id = u.id 
+            WHERE o.status = 'PAID'
+            ORDER BY o.created_at DESC 
+            LIMIT 10
+        ");
+        $recentOrders = $stmt->fetchAll();
+      ?>
+      
+      <?php if (count($recentOrders) > 0): ?>
+        <table style="width: 100%; text-align: left; border-collapse: collapse;">
+            <thead>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                    <th style="padding: 1rem; color: var(--neon-blue);">DATA</th>
+                    <th style="padding: 1rem; color: var(--neon-blue);">CLIENTE</th>
+                    <th style="padding: 1rem; color: var(--neon-blue);">VALOR</th>
+                    <th style="padding: 1rem; color: var(--neon-blue);">STATUS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($recentOrders as $ro): ?>
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <td style="padding: 1rem;"><?= date('d/m H:i', strtotime($ro['created_at'])) ?></td>
+                    <td style="padding: 1rem;">
+                        <div style="font-weight: bold;"><?= htmlspecialchars($ro['user_name']) ?></div>
+                        <div style="font-size: 0.8rem; color: #666;"><?= htmlspecialchars($ro['user_email']) ?></div>
+                    </td>
+                    <td style="padding: 1rem; font-family: 'Orbitron'; color: #00ff99;">R$ <?= number_format($ro['total_cents']/100, 2, ',', '.') ?></td>
+                    <td style="padding: 1rem;">
+                        <span style="background: rgba(0, 255, 153, 0.1); color: #00ff99; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; border: 1px solid #00ff99;">APROVADO</span>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+      <?php else: ?>
+        <p style="text-align: center; color: #666; padding: 2rem;">Nenhuma venda registrada ainda.</p>
+      <?php endif; ?>
     </div>
   </main>
 </div>

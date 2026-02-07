@@ -12,6 +12,10 @@ try {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     ");
 
+    // Ensure 'role' and 'active' columns exist in the 'users' table
+    try { $pdo->exec("ALTER TABLE users ADD COLUMN role ENUM('user', 'admin') DEFAULT 'user' AFTER password_hash"); } catch (PDOException $e) {}
+    try { $pdo->exec("ALTER TABLE users ADD COLUMN active TINYINT(1) DEFAULT 1 AFTER role"); } catch (PDOException $e) {}
+
     // 2. Insert Default Email Template if not exists
     $stmt = $pdo->prepare("SELECT COUNT(*) FROM settings WHERE setting_key = 'email_template'");
     $stmt->execute();
