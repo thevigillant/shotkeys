@@ -46,9 +46,16 @@ require_login();
           </p>
         </div>
         <div class="d-flex gap-3">
+        <div class="d-flex gap-3">
              <span class="badge bg-custom rounded-pill d-flex align-items-center px-3" style="background: rgba(230,0,230,0.2); border: 1px solid var(--color-accent); color: var(--color-accent);">
                 Conta Ativa
              </span>
+             <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
+                <a href="admin/dashboard.php" class="btn btn-outline-light rounded-pill px-4" style="border-color: #00f3ff; color: #00f3ff; box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);">
+                    👑 Painel Admin
+                </a>
+             <?php endif; ?>
+        </div>
         </div>
       </div>
 

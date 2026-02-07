@@ -61,6 +61,7 @@ try {
     <div class="brand">SK // ADMIN</div>
     <nav>
       <a href="dashboard.php" class="nav-item">Dashboard</a>
+      <a href="users.php" class="nav-item">Gerenciar Usuários</a>
       <a href="settings.php" class="nav-item active">Config Emails</a>
       <a href="../index.php" class="nav-item">Voltar Loja</a>
     </nav>

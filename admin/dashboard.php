@@ -207,6 +207,7 @@ if (empty($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
     <div class="brand">SK // ADMIN</div>
     <nav>
       <a href="dashboard.php" class="nav-item active">Dashboard</a>
+      <a href="users.php" class="nav-item">Gerenciar Usuários</a>
       <a href="settings.php" class="nav-item">Config Emails</a>
       <a href="../index.php" class="nav-item">Voltar Loja</a>
     </nav>
