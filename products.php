@@ -184,7 +184,7 @@ try {
                          <span class="badge bg-secondary">Random Key</span>
                          <span class="fs-4 fw-bold text-white">R$ <?= number_format($p['price_cents']/100, 2, ',', '.') ?></span>
                       </div>
-                      <a href="javascript:void(0)" onclick="cartManager.add(<?= $p['id'] ?>, this)" class="btn btn-custom w-100">
+                      <a href="javascript:void(0)" onclick="alert('Debug: Clique recebido!'); cartManager.add(<?= $p['id'] ?>, this)" class="btn btn-custom w-100" style="position: relative; z-index: 1000;">
                         Tentara a Sorte (Add +)
                       </a>
 

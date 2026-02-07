@@ -207,5 +207,6 @@ const cartManager = {
     }
 };
 
+window.cartManager = cartManager;
 // Start
-document.addEventListener('DOMContentLoaded', () => cartManager.init());
+document.addEventListener('DOMContentLoaded', () => window.cartManager.init());
