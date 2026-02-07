@@ -82,7 +82,7 @@ if (is_logged_in()) {
              <p class="text-white-50 small mb-4">
                Acompanhe o status das suas compras e acesse suas chaves de ativação.
              </p>
-             <a href="my_orders.php" class="btn btn-outline-light w-100 rounded-pill">Ver histórico</a>
+             <a href="meus_pedidos.php" class="btn btn-outline-light w-100 rounded-pill">Ver histórico</a>
           </div>
         </div>
 

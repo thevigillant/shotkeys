@@ -69,7 +69,7 @@ $orders = $stmt->fetchAll();
         <h1 class="h2 archivofont mb-1 text-white">HISTÓRICO DE PEDIDOS</h1>
         <p class="text-white-50 mb-0">Gerencie suas compras e acesse suas chaves.</p>
       </div>
-      <a href="produtos.php" class="btn btn-custom shadow-lg">
+      <a href="products.php" class="btn btn-custom shadow-lg">
         <span class="me-2">+</span>Novo Pedido
       </a>
     </div>
@@ -81,7 +81,7 @@ $orders = $stmt->fetchAll();
           </div>
           <h3 class="h4 text-white mb-3">Você ainda não tem nenhum loot!</h3>
           <p class="text-white-50 mb-4" style="max-width: 400px; margin: 0 auto;">Assim que você garantir sua primeira key ou random box, ela aparecerá aqui instantaneamente.</p>
-          <a href="produtos.php" class="btn btn-outline-light rounded-pill px-4">Explorar Loja</a>
+          <a href="products.php" class="btn btn-outline-light rounded-pill px-4">Explorar Loja</a>
       </div>
     <?php else: ?>
       

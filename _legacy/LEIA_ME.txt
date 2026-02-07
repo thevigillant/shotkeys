@@ -1,0 +1,11 @@
+Esta pasta contem arquivos antigos ou de instalação que não são mais necessários para o funcionamento diario da loja.
+Eles foram movidos para ca no dia 07/02/2026 para limpar a raiz do projeto.
+
+Se tudo estiver funcionando bem por uma semana, esta pasta inteira pode ser deletada com segurança.
+
+Arquivos importantes movidos:
+- Scripts de Setup (setup_catalog, setup_admin, etc) -> Só rodam uma vez.
+- install.php -> Instalação inicial.
+- produtos.php -> Versão antiga (usamos products.php agora).
+- my_orders.php / order_details.php -> Versões antigas (usamos meus_pedidos.php e pedido.php).
+- *.sqlite -> Banco de dados local antigo (agora usamos MySQL).
