@@ -214,13 +214,13 @@ $products = $pdo->query("SELECT * FROM products ORDER BY id DESC")->fetchAll();
         <tbody>
             <?php foreach ($products as $p): ?>
             <tr>
-                <td><img src="<?= htmlspecialchars($p['image_url'] ?: '../assets/keys/glock/glock.png') ?>" class="prod-thumb"></td>
+                <td><img src="<?= htmlspecialchars(($p['image_url'] ?? '') ?: '../assets/keys/glock/glock.png') ?>" class="prod-thumb"></td>
                 <td>
                     <div style="font-weight: bold;"><?= htmlspecialchars($p['title']) ?></div>
                     <div style="font-size: 0.8rem; color: #666;"><?= htmlspecialchars($p['slug']) ?></div>
                 </td>
                 <td>
-                    <span style="color: var(--neon-blue)"><?= htmlspecialchars($p['category']) ?></span><br>
+                    <span style="color: var(--neon-blue)"><?= htmlspecialchars($p['category'] ?? 'Geral') ?></span><br>
                     <span style="font-size: 0.8rem; color: #888"><?= htmlspecialchars($p['type']) ?></span>
                 </td>
                 <td style="color: #00ff99; font-family: 'Orbitron'">
@@ -258,10 +258,10 @@ function editProduct(p) {
     document.getElementById('f_slug').value = p.slug;
     document.getElementById('f_description').value = p.description;
     document.getElementById('f_price').value = p.price_cents / 100;
-    document.getElementById('f_category').value = p.category;
+    document.getElementById('f_category').value = p.category || 'AAA';
     document.getElementById('f_type').value = p.type;
-    document.getElementById('f_image_url').value = p.image_url;
-    document.getElementById('f_affiliate_url').value = p.affiliate_url;
+    document.getElementById('f_image_url').value = p.image_url || '';
+    document.getElementById('f_affiliate_url').value = p.affiliate_url || '';
     
     window.scrollTo(0, 0);
 }
