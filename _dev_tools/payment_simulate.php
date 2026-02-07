@@ -181,11 +181,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_payment'])) {
                     R$ <?= number_format($order['total_cents']/100, 2, ',', '.') ?>
                 </h2>
 
-                <!-- Action Controls -->
                 <div id="controls" class="mt-4">
-                    <button onclick="approvePayment()" class="btn btn-success btn-lg w-100 mb-3 py-3 shadow-lg fw-bold">
+                    <a href="confirm_payment.php?order_id=<?= $orderId ?>" class="btn btn-success btn-lg w-100 mb-3 py-3 shadow-lg fw-bold" style="text-decoration: none;">
                         ✅ APROVAR PAGAMENTO SIMULADO
-                    </button>
+                    </a>
                     <a href="../pedido.php?id=<?= $orderId ?>" class="btn btn-outline-danger w-100 btn-sm">
                         Cancelar Operação
                     </a>
