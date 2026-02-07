@@ -20,9 +20,26 @@ try {
         $pdo->prepare("INSERT INTO settings (setting_key, setting_value) VALUES ('email_template', ?)")->execute([$defaultTemplate]);
     }
 
-    // 3. Promote User to Admin (Change this email to your account email)
-    // We will assume the user currently logged in or a specific email is admin.
-    // Let's create a generic admin or update the user based on a GET parameter
+    // 3. Promote User to Admin (Specific User)
+    $targetEmail = 'brunosantanareisfc@gmail.com';
+    
+    // Check if user exists
+    $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
+    $stmt->execute([$targetEmail]);
+    $user = $stmt->fetch();
+
+    if ($user) {
+        // Promote existing
+        $pdo->prepare("UPDATE users SET role = 'admin' WHERE email = ?")->execute([$targetEmail]);
+        echo "<h2 style='color: green'>✅ Usuário $targetEmail agora é ADMIN!</h2>";
+    } else {
+        // Create new admin
+        $passHash = password_hash('123456', PASSWORD_DEFAULT);
+        $stmt = $pdo->prepare("INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, 'admin')");
+        $stmt->execute(['Bruno Admin', $targetEmail, $passHash]);
+        echo "<h2 style='color: green'>✅ Admin criado: $targetEmail (Senha: 123456)</h2>";
+    }
+
     if (isset($_GET['admin_email'])) {
         $email = $_GET['admin_email'];
         $stmt = $pdo->prepare("UPDATE users SET role = 'admin' WHERE email = ?");

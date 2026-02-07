@@ -216,18 +216,39 @@ if (empty($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
   <main class="main-content">
     <h1 class="header-title">VISÃO GERAL DO SISTEMA</h1>
 
+    <?php
+    // Fetch Real Stats
+    try {
+        // Sales Today
+        $stmt = $pdo->prepare("SELECT SUM(total_cents) FROM orders WHERE status = 'PAID' AND DATE(created_at) = CURDATE()");
+        $stmt->execute();
+        $salesToday = $stmt->fetchColumn() ?: 0;
+        
+        // Delivered Keys
+        $stmt = $pdo->query("SELECT COUNT(*) FROM product_keys WHERE status = 'sold'");
+        $keysDelivered = $stmt->fetchColumn();
+
+        // Active Users
+        $stmt = $pdo->query("SELECT COUNT(*) FROM users");
+        $usersCount = $stmt->fetchColumn();
+
+    } catch (Exception $e) {
+        $salesToday = 0; $keysDelivered = 0; $usersCount = 0;
+    }
+    ?>
+
     <div class="stat-grid">
       <div class="stat-card">
         <div class="stat-label">Vendas Hoje</div>
-        <div class="stat-value">R$ 0,00</div>
+        <div class="stat-value">R$ <?= number_format($salesToday / 100, 2, ',', '.') ?></div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Keys Entregues</div>
-        <div class="stat-value">0</div>
+        <div class="stat-value"><?= $keysDelivered ?></div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Usuários Ativos</div>
-        <div class="stat-value">1</div>
+        <div class="stat-label">Usuários Cadastrados</div>
+        <div class="stat-value"><?= $usersCount ?></div>
       </div>
     </div>
 
