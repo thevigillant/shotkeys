@@ -156,14 +156,14 @@ try {
                 if ($catName === 'FPS') $catColor = 'bg-warning text-dark';
               ?>
               
-              <div class="ratio ratio-16x9 bg-dark-transparent" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+              <div style="position: relative; height: 220px; overflow: hidden; border-bottom: 1px solid rgba(255,255,255,0.1);">
                   <span class="badge <?= $catColor ?>" style="position: absolute; top: 10px; right: 10px; z-index: 10; box-shadow: 0 0 10px rgba(0,0,0,0.5);"><?= $catName ?></span>
                   <img
                     src="<?= htmlspecialchars($imgUrl) ?>"
                     alt="<?= htmlspecialchars($p['title']) ?>"
                     loading="lazy"
-                    class="card-img-top w-100 h-100"
-                    style="object-fit: cover; object-position: center;"
+                    class="card-img-top"
+                    style="width: 100%; height: 100%; object-fit: cover; object-position: center;"
                   />
               </div>
               

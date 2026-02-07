@@ -1,6 +1,6 @@
 <?php
-require __DIR__ . '/config.php';
-require __DIR__ . '/services/DeliveryService.php';
+require __DIR__ . '/../config.php';
+require __DIR__ . '/../services/DeliveryService.php';
 
 // Simulate a Webhook Callback from a Payment Gateway
 // In production, this would be a POST request from Stripe/MercadoPago

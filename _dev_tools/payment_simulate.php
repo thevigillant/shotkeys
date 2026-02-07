@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/config.php';
+require __DIR__ . '/../config.php';
 require_login();
 
 // 1. Try to get Order ID directly
@@ -106,10 +106,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_payment'])) {
                     <?php
                     // Gerar Payload Pix Válido
                     // Use __DIR__ to ensure correct path relative to this file
-                    $pixServicePath = __DIR__ . '/services/PixService.php';
+                    $pixServicePath = __DIR__ . '/../services/PixService.php';
                     
                     if (!file_exists($pixServicePath)) {
-                        echo "<p class='text-danger'>Erro: Arquivo PixService.php não encontrado.</p>";
+                        echo "<p class='text-danger'>Erro: Arquivo PixService.php não encontrado em " . $pixServicePath . "</p>";
                         $payloadPix = "Erro: PixService.php não encontrado."; // Default value to prevent errors later
                     } else {
                         require_once $pixServicePath;
@@ -228,7 +228,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_payment'])) {
         const gatewayId = "<?= $order['payment_gateway_id'] ?>";
 
         try {
-            const response = await fetch('webhook_simulate.php', {
+            const response = await fetch('../_legacy/webhook_simulate.php', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
@@ -244,7 +244,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_payment'])) {
                 btn.classList.add('pulse');
                 setTimeout(() => {
                     // Redirect to order details
-                    window.location.href = 'order_details.php?id=<?= $order['id'] ?>&paid=true';
+                    window.location.href = '../pedido.php?id=<?= $order['id'] ?>&paid=true';
                 }, 1000);
             } else {
                 alert("Erro: " + (result.error || result.message));

@@ -147,7 +147,7 @@ $items = $stmt->fetchAll();
               <!-- Recuperar slug do primeiro produto para voltar ao checkout se precisar, 
                    embora o ideal fosse ter um link direto de pagamento no pedido -->
               <input type="hidden" id="gw_id" value="<?= $order['payment_gateway_id'] ?>">
-              <form action="pay_simulate.php" method="POST">
+              <form action="_dev_tools/payment_simulate.php" method="POST">
                   <input type="hidden" name="order_id" value="<?= $order['id'] ?>">
                   <button type="submit" class="btn btn-custom btn-sm">Ir para Pagamento (Exemplo)</button>
               </form>
