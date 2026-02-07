@@ -1,11 +1,13 @@
-<?php
 require __DIR__ . '/../config.php';
 require_login();
 
-// Simple Admin Check
-if (empty($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
-     header("Location: ../dashboard.php");
-     exit;
+// Allow access if session says admin OR if it's the super admin email
+$isSuperAdmin = (isset($_SESSION['user_email']) && $_SESSION['user_email'] === 'brunosantanareisfc@gmail.com');
+$isAdminInfo = (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin');
+
+if (!$isSuperAdmin && !$isAdminInfo) {
+     // Debug: If rejected, show why instead of redirecting immediately
+     die("Acesso Negado. Role: " . ($_SESSION['user_role'] ?? 'N/A') . " | Email: " . ($_SESSION['user_email'] ?? 'N/A'));
 }
 
 // AUTO-REPAIR: Ensure 'active' column exists silently
