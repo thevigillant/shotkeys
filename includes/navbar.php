@@ -78,3 +78,6 @@
     </div>
   </div>
 </nav>
+
+<!-- Global Cart Component (Includes JS logic) -->
+<?php include __DIR__ . '/cart_drawer.php'; ?>

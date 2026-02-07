@@ -227,9 +227,5 @@ try {
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"
   ></script>
-
-  <!-- Carrinho (Load after Bootstrap) -->
-  <?php include __DIR__ . '/includes/cart_drawer.php'; ?>
-
 </body>
 </html>
