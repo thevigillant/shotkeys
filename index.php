@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+require_once __DIR__ . '/config.php'; // Ensure config is loaded for session
+?>
 <html lang="pt-BR">
   <head>
     <meta charset="utf-8" />
