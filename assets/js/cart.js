@@ -94,19 +94,43 @@ const cartManager = {
         }
     },
 
-    add: async function(id, qty = 1) {
+    add: async function(id, btnElement = null) {
         console.log('Adding product:', id);
+        
+        let originalText = '';
+        if (btnElement) {
+            // Se for passado "this" no onclick
+            if (!(btnElement instanceof Element)) btnElement = null; // Safety
+        }
+
+        if (btnElement) {
+            originalText = btnElement.innerHTML;
+            btnElement.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ...';
+            btnElement.style.pointerEvents = 'none';
+            btnElement.style.opacity = '0.7';
+        }
+
         try {
-            const res = await this.api('add', { id, qty });
+            const res = await this.api('add', { id, qty: 1 });
+            
             if (res.success) {
                 this.render(res.cart);
                 this.open(); 
             } else {
                 alert('Erro ao adicionar: ' + (res.message || 'Desconhecido'));
             }
-            return res;
         } catch(err) {
             console.error(err);
+            alert('Erro de conexão ao adicionar produto.');
+        } finally {
+            if (btnElement) {
+                // Restore logic
+                setTimeout(() => {
+                    btnElement.innerHTML = originalText;
+                    btnElement.style.pointerEvents = 'auto';
+                    btnElement.style.opacity = '1';
+                }, 500);
+            }
         }
     },
 
