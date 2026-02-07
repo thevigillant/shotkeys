@@ -61,10 +61,26 @@ try {
 
             if ($userEmail) {
                 $subject = "Sua Key ShotKeys Chegou!";
-                $message = "Obrigado pela compra! Aqui esta sua key:\n\n" . $key . "\n\nAtenciosamente,\nEquipe ShotKeys";
+                
+                // Fetch Template from DB
+                $tplStmt = $pdo->prepare("SELECT setting_value FROM settings WHERE setting_key = 'email_template'");
+                $tplStmt->execute();
+                $template = $tplStmt->fetchColumn();
+
+                if (!$template) {
+                    $template = "Olá {name},\n\nObrigado pela sua compra!\n\nAqui está sua chave de ativação:\n\n{key}\n\nDivirta-se!\nEquipe ShotKeys";
+                }
+
+                // Replace placeholders
+                $messageBody = str_replace(
+                    ['{name}', '{key}', '{product}'], 
+                    [$input['user_name'] ?? 'Cliente', $key, $input['product_title'] ?? 'Produto'], 
+                    $template
+                );
+
                 $headers = "From: no-reply@shotkeys.store";
                 // Suppress errors for localhost
-                @mail($userEmail, $subject, $message, $headers);
+                @mail($userEmail, $subject, $messageBody, $headers);
             }
 
             echo json_encode(['status' => 'success', 'message' => 'Order Paid and Key Delivered']);
