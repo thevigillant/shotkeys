@@ -137,7 +137,7 @@ $products = $pdo->query("SELECT * FROM products ORDER BY id DESC")->fetchAll();
 
     <div class="panel-header">
         <h1 class="page-title">ARSENAL (PRODUTOS)</h1>
-        <button onclick="openModal()" class="btn-create">+ NOVO ITEM</button>
+        <button class="btn-create" data-bs-toggle="modal" data-bs-target="#productModal" onclick="document.getElementById('f_id').value=''; document.getElementById('mainForm').reset()">+ NOVO ITEM</button>
     </div>
 
     <!-- Product List -->
@@ -248,8 +248,9 @@ $products = $pdo->query("SELECT * FROM products ORDER BY id DESC")->fetchAll();
       </div>
     </div>
 
+<script>
 function editProduct(p) {
-    document.getElementById('productForm').style.display = 'block';
+    var myModal = new bootstrap.Modal(document.getElementById('productModal'));
     
     document.getElementById('f_id').value = p.id;
     document.getElementById('f_title').value = p.title;
@@ -261,7 +262,7 @@ function editProduct(p) {
     document.getElementById('f_image_url').value = p.image_url || '';
     document.getElementById('f_affiliate_url').value = p.affiliate_url || '';
     
-    window.scrollTo(0, 0);
+    myModal.show();
 }
 </script>
 
