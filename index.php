@@ -95,12 +95,13 @@
         class="img-fluid shotkeys-img mb-4"
       />
 
-      <p class="text-white fs-4 robotofont mb-5" style="max-width: 600px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
-        Do Caos à Glória: Dispare sua sorte e garanta os melhores jogos com entrega imediata.
+      <p class="text-white fs-4 robotofont mb-5" style="max-width: 700px; text-shadow: 0 4px 10px rgba(0,0,0,0.8); line-height: 1.8; opacity: 0.9;">
+        Do <span class="text-accent fw-bold">Caos</span> à <span class="text-accent fw-bold">Glória</span>.<br>
+        Dispare sua sorte e garanta os melhores jogos com entrega imediata.
       </p>
 
-      <a href="products.php" class="btn btn-custom btn-lg">
-        Explorar Produtos
+      <a href="products.php" class="btn btn-custom btn-lg px-5 py-3 fs-5" style="border: 1px solid rgba(255,255,255,0.2);">
+        EXPLORAR PRODUTOS
       </a>
     </main>
 
