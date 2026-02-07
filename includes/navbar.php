@@ -50,6 +50,14 @@
               <span class="d-none d-lg-inline fw-bold"><?= htmlspecialchars($_SESSION['user_name'] ?? 'Usuário') ?></span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="userDropdown">
+              <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
+                  <li>
+                      <a class="dropdown-item fw-bold" href="admin/dashboard.php" style="color: #00f3ff; text-shadow: 0 0 5px rgba(0,243,255,0.5);">
+                          👑 Painel Admin
+                      </a>
+                  </li>
+                  <li><hr class="dropdown-divider"></li>
+              <?php endif; ?>
               <li><a class="dropdown-item" href="dashboard.php">Minha Conta</a></li>
               <li><a class="dropdown-item" href="my_orders.php">Meus Pedidos</a></li>
               <li><hr class="dropdown-divider"></li>
