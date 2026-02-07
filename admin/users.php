@@ -115,6 +115,7 @@ try {
     <div style="font-family: 'Orbitron'; font-size: 1.5rem; color: var(--neon-blue); margin-bottom: 2rem;">SK // ADMIN</div>
     <nav>
       <a href="dashboard.php" class="nav-item">Dashboard</a>
+      <a href="products.php" class="nav-item">Gerenciar Produtos</a>
       <a href="users.php" class="nav-item active">Gerenciar Usuários</a>
       <a href="settings.php" class="nav-item">Config Emails</a>
       <a href="../index.php" class="nav-item">Voltar Loja</a>
