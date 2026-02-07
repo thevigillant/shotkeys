@@ -37,9 +37,11 @@ const cartManager = {
     attachListeners: function() {
         document.addEventListener('click', (e) => {
             // Open Cart Trigger
-            if (e.target.closest('.js-open-cart')) {
+            const openBtn = e.target.closest('.js-open-cart');
+            if (openBtn) {
                 e.preventDefault();
                 this.open();
+                return;
             }
 
             // Add to Cart Trigger
@@ -47,7 +49,28 @@ const cartManager = {
             if (addBtn) {
                 e.preventDefault();
                 const id = addBtn.dataset.id;
-                this.add(id);
+                
+                if(!id) {
+                    console.error('Product ID missing on button', addBtn);
+                    return;
+                }
+
+                // Visual Feedback
+                const originalText = addBtn.innerHTML;
+                addBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ...';
+                addBtn.disabled = true;
+
+                this.add(id).then(() => {
+                    // Restore button after delay
+                    setTimeout(() => {
+                        addBtn.innerHTML = originalText;
+                        addBtn.disabled = false;
+                        
+                        // Optional: Show success tick
+                        const icon = addBtn.querySelector('svg');
+                        if(icon) icon.style.color = '#00ff00';
+                    }, 500);
+                });
             }
         });
     },
@@ -73,12 +96,17 @@ const cartManager = {
 
     add: async function(id, qty = 1) {
         console.log('Adding product:', id);
-        const res = await this.api('add', { id, qty });
-        if (res.success) {
-            this.render(res.cart);
-            this.open(); 
-        } else {
-            alert('Erro ao adicionar ao carrinho.');
+        try {
+            const res = await this.api('add', { id, qty });
+            if (res.success) {
+                this.render(res.cart);
+                this.open(); 
+            } else {
+                alert('Erro ao adicionar: ' + (res.message || 'Desconhecido'));
+            }
+            return res;
+        } catch(err) {
+            console.error(err);
         }
     },
 
