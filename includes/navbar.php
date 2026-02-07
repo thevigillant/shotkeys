@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg fixed-top">
   <div class="container">
-    <a class="navbar-brand archivofont" href="index.php">
-      ShotKeys
+    <a class="navbar-brand" href="index.php">
+      <img src="assets/images/nav Shot Keys.png" alt="ShotKeys" height="50" class="d-inline-block align-text-top">
     </a>
 
     <button
