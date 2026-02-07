@@ -118,8 +118,42 @@ if (is_logged_in()) {
     </div>
   </main>
 
+  <!-- Floating Admin Button -->
+  <?php if (isset($_SESSION['user_id'])): ?>
+  <a href="admin/dashboard.php" target="_blank" class="admin-float-btn" title="Acessar Painel Admin">
+    👑
+  </a>
+  <style>
+    .admin-float-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      background: #00f3ff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      box-shadow: 0 0 20px rgba(0, 243, 255, 0.6);
+      z-index: 9999;
+      text-decoration: none;
+      transition: transform 0.3s;
+      animation: pulse 2s infinite;
+    }
+    .admin-float-btn:hover {
+      transform: scale(1.1);
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(0, 243, 255, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(0, 243, 255, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(0, 243, 255, 0); }
+    }
+  </style>
+  <?php endif; ?>
+
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
 </body>
 </html>
