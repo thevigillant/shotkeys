@@ -59,12 +59,18 @@
 </style>
 
 <script>
-const cartManager = {
+window.cartManager = {
     offcanvas: null,
 
     init: function() {
+        console.log('CartManager: Initializing...');
         const el = document.getElementById('cartOffcanvas');
-        if(el) this.offcanvas = new bootstrap.Offcanvas(el);
+        if(el) {
+            this.offcanvas = new bootstrap.Offcanvas(el);
+            console.log('CartManager: Offcanvas found');
+        } else {
+            console.error('CartManager: Offcanvas NOT found');
+        }
         this.updateView();
     },
 
@@ -78,15 +84,24 @@ const cartManager = {
         formData.append('action', action);
         for (const k in data) formData.append(k, data[k]);
 
-        const res = await fetch('api/cart.php', { method: 'POST', body: formData });
-        return await res.json();
+        try {
+            const res = await fetch('api/cart.php', { method: 'POST', body: formData });
+            const json = await res.json();
+            return json;
+        } catch (e) {
+            console.error('Cart API Error:', e);
+            return { success: false };
+        }
     },
 
     add: async function(id, qty = 1) {
+        console.log('Adding product:', id);
         const res = await this.api('add', { id, qty });
         if (res.success) {
             this.render(res.cart);
             this.open(); // Auto open on add
+        } else {
+            alert('Erro ao adicionar ao carrinho. Tente novamente.');
         }
     },
 
@@ -126,43 +141,47 @@ const cartManager = {
         }
 
         // Update Total
-        totalEl.innerText = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(cart.total_cents / 100);
+        if(totalEl) totalEl.innerText = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(cart.total_cents / 100);
 
         // Render Items
-        container.innerHTML = '';
+        if(container) {
+            container.innerHTML = '';
 
-        if (cart.items.length === 0) {
-            container.innerHTML = `
-                <div class="text-center py-5 opacity-50">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="mb-3"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                    <p>Seu carrinho está vazio.</p>
-                </div>
-            `;
-            document.getElementById('btnFinalizar').disabled = true;
-            return;
+            if (cart.items.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-5 opacity-50">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="mb-3"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                        <p>Seu carrinho está vazio.</p>
+                    </div>
+                `;
+                const btn = document.getElementById('btnFinalizar');
+                if(btn) btn.disabled = true;
+                return;
+            }
+
+            const btn = document.getElementById('btnFinalizar');
+            if(btn) btn.disabled = false;
+
+            cart.items.forEach(item => {
+                const clone = template.content.cloneNode(true);
+                const imgUrl = item.image_url || 'assets/keys/glock/glock.png'; 
+                
+                clone.querySelector('.item-title').innerText = item.title;
+                clone.querySelector('.item-price').innerText = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price / 100);
+                clone.querySelector('.item-img').src = imgUrl;
+                clone.querySelector('.item-qty').innerText = item.qty;
+                
+                // Events
+                clone.querySelector('.btn-plus').onclick = () => this.update(item.id, item.qty + 1);
+                clone.querySelector('.btn-minus').onclick = () => this.update(item.id, item.qty - 1);
+                clone.querySelector('.btn-remove').onclick = () => this.remove(item.id);
+
+                container.appendChild(clone);
+            });
         }
-
-        document.getElementById('btnFinalizar').disabled = false;
-
-        cart.items.forEach(item => {
-            const clone = template.content.cloneNode(true);
-            const imgUrl = item.image_url || 'assets/keys/glock/glock.png'; 
-            
-            clone.querySelector('.item-title').innerText = item.title;
-            clone.querySelector('.item-price').innerText = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price / 100);
-            clone.querySelector('.item-img').src = imgUrl;
-            clone.querySelector('.item-qty').innerText = item.qty;
-            
-            // Events
-            clone.querySelector('.btn-plus').onclick = () => this.update(item.id, item.qty + 1);
-            clone.querySelector('.btn-minus').onclick = () => this.update(item.id, item.qty - 1);
-            clone.querySelector('.btn-remove').onclick = () => this.remove(item.id);
-
-            container.appendChild(clone);
-        });
     }
 };
 
 // Auto init
-document.addEventListener('DOMContentLoaded', () => cartManager.init());
+document.addEventListener('DOMContentLoaded', () => window.cartManager.init());
 </script>
