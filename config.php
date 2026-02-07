@@ -22,8 +22,8 @@ if (file_exists($local_config_path)) {
 // Credenciais (prioridade: env > config.local.php > Hardcoded for Hostinger)
 $DB_HOST = getenv('DB_HOST') ?: 'localhost';
 $DB_NAME = getenv('DB_NAME') ?: 'u341346182_dbshotkeys';
-$DB_USER = getenv('DB_USER') ?: 'u341346182_admin'; // Assuming admin username based on pattern, user might need to confirm this if connection fails
-$DB_PASS = getenv('DB_PASS') ?: 'Shotkeys2024!'; // Keeping pass unless user says otherwise
+$DB_USER = getenv('DB_USER') ?: 'u341346182_admshot';
+$DB_PASS = getenv('DB_PASS') ?: '@Shotkeys2026';
 
 // Security Keys
 // ⚠️ IMPORTANT: Change this to a random 32-char string in production!
@@ -47,10 +47,10 @@ try {
     ]
   );
 } catch (Throwable $e) {
+  // Production: Log error and show generic message
   error_log('DB connection error: ' . $e->getMessage());
-  // Show a clean error to user
   http_response_code(500);
-  exit('Erro ao conectar ao banco de dados MySQL.');
+  exit('Erro ao conectar ao banco de dados.');
 }
 
 function is_logged_in(): bool {
