@@ -110,16 +110,7 @@ $products = $pdo->query("SELECT * FROM products ORDER BY id DESC")->fetchAll();
 <body>
 
 <div class="admin-container">
-  <aside class="sidebar">
-    <div style="font-family: 'Orbitron'; font-size: 1.5rem; color: var(--neon-blue); margin-bottom: 2rem;">SK // ADMIN</div>
-    <nav>
-      <a href="dashboard.php" class="nav-item">Dashboard</a>
-      <a href="users.php" class="nav-item">Gerenciar Usuários</a>
-      <a href="products.php" class="nav-item active">Gerenciar Produtos</a>
-      <a href="settings.php" class="nav-item">Config Emails</a>
-      <a href="../index.php" class="nav-item">Voltar Loja</a>
-    </nav>
-  </aside>
+  <?php include __DIR__ . '/includes/sidebar.php'; ?>
 
   <main class="main-content">
     

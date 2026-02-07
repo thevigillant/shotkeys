@@ -57,15 +57,7 @@ try {
 <body>
 
 <div class="admin-container">
-  <aside class="sidebar">
-    <div class="brand">SK // ADMIN</div>
-    <nav>
-      <a href="dashboard.php" class="nav-item">Dashboard</a>
-      <a href="users.php" class="nav-item">Gerenciar Usuários</a>
-      <a href="settings.php" class="nav-item active">Config Emails</a>
-      <a href="../index.php" class="nav-item">Voltar Loja</a>
-    </nav>
-  </aside>
+  <?php include __DIR__ . '/includes/sidebar.php'; ?>
 
   <main class="main-content">
     <h1 class="header-title">AUTOMACAÇÃO DE EMAILS</h1>
