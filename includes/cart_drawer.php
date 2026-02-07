@@ -65,11 +65,23 @@ window.cartManager = {
     init: function() {
         console.log('CartManager: Initializing...');
         const el = document.getElementById('cartOffcanvas');
+        
+        if (typeof bootstrap === 'undefined') {
+            console.error('Bootstrap is not loaded yet!');
+            // Retry after 500ms if bootstrap is missing
+            setTimeout(() => this.init(), 500);
+            return;
+        }
+
         if(el) {
-            this.offcanvas = new bootstrap.Offcanvas(el);
-            console.log('CartManager: Offcanvas found');
+            try {
+                this.offcanvas = new bootstrap.Offcanvas(el);
+                console.log('CartManager: Offcanvas initialized');
+            } catch (err) {
+                console.error('CartManager: Failed to init offcanvas', err);
+            }
         } else {
-            console.error('CartManager: Offcanvas NOT found');
+            console.error('CartManager: User Interface element not found');
         }
         this.updateView();
     },
