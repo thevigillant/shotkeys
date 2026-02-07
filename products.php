@@ -184,16 +184,16 @@ try {
                          <span class="badge bg-secondary">Random Key</span>
                          <span class="fs-4 fw-bold text-white">R$ <?= number_format($p['price_cents']/100, 2, ',', '.') ?></span>
                       </div>
-                      <a href="checkout.php?product=<?= $p['slug'] ?>" class="btn btn-custom w-100">
-                        Tentara a Sorte
+                      <a href="javascript:void(0)" onclick="cartManager.add(<?= $p['id'] ?>)" class="btn btn-custom w-100">
+                        Tentara a Sorte (Add +)
                       </a>
 
                     <?php else: ?>
                        <div class="d-flex justify-content-between align-items-center mb-2">
                          <span class="fs-4 fw-bold text-accent" style="font-family: 'Orbitron'">R$ <?= number_format($p['price_cents']/100, 2, ',', '.') ?></span>
                       </div>
-                      <a href="checkout.php?product=<?= $p['slug'] ?>" class="btn btn-custom w-100 d-flex justify-content-between align-items-center">
-                        <span>Comprar</span>
+                      <a href="javascript:void(0)" onclick="cartManager.add(<?= $p['id'] ?>)" class="btn btn-custom w-100 d-flex justify-content-between align-items-center">
+                        <span>Adicionar +</span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
                       </a>
                     <?php endif; ?>
@@ -220,6 +220,9 @@ try {
       </p>
     </div>
   </footer>
+
+  <!-- Carrinho -->
+  <?php include __DIR__ . '/includes/cart_drawer.php'; ?>
 
   <!-- Bootstrap JS -->
   <script

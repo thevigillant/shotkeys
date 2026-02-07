@@ -31,12 +31,16 @@
 
       <div class="d-flex align-items-center gap-3">
         <!-- Carrinho -->
-        <a href="#" class="text-white position-relative" aria-label="Carrinho">
+        <!-- Carrinho Trigger -->
+        <a href="javascript:void(0)" onclick="cartManager.open()" class="text-white position-relative me-3" aria-label="Carrinho">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="9" cy="21" r="1"></circle>
             <circle cx="20" cy="21" r="1"></circle>
             <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
           </svg>
+          <span id="cartCountBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.7rem; display: none;">
+            0
+          </span>
         </a>
 
         <?php if (is_logged_in()): ?>
