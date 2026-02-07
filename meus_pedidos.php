@@ -179,24 +179,29 @@ $orders = $stmt->fetchAll();
               </button>
             </h2>
             <div id="collapse<?= $o['id'] ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $o['id'] ?>" data-bs-parent="#ordersAccordion">
-              <div class="accordion-body bg-black bg-opacity-25 border-top border-secondary border-opacity-25">
+              <div class="accordion-body border-top border-white border-opacity-10" style="background: rgba(0,0,0,0.2);">
                  
-                 <div class="d-flex flex-column gap-2 mb-3">
-                    <?php foreach ($orderSimpleItems as $item): ?>
-                        <div class="d-flex align-items-center gap-3 p-2 rounded bg-dark border border-secondary border-opacity-10">
-                            <img src="<?= htmlspecialchars(($item['image_url'] ?? '') ?: 'assets/keys/glock/glock.png') ?>" style="width: 50px; height: 50px; object-fit: contain; background: rgba(255,255,255,0.05); border-radius: 4px;">
-                            <span class="fw-bold"><?= htmlspecialchars($item['title']) ?></span>
+                 <div class="d-flex flex-column gap-0 mb-3">
+                    <?php foreach ($orderSimpleItems as $index => $item): ?>
+                        <div class="d-flex align-items-center gap-3 p-3 <?= $index < count($orderSimpleItems)-1 ? 'border-bottom border-white border-opacity-10' : '' ?>">
+                            <div class="position-relative">
+                                <img src="<?= htmlspecialchars(($item['image_url'] ?? '') ?: 'assets/keys/glock/glock.png') ?>" style="width: 60px; height: 60px; object-fit: contain; background: rgba(0,0,0,0.3); border-radius: 8px; padding: 5px;">
+                            </div>
+                            <div>
+                                <span class="fw-bold text-white d-block" style="font-size: 1.1rem; text-shadow: 0 0 10px rgba(0,0,0,0.5);"><?= htmlspecialchars($item['title']) ?></span>
+                                <span class="text-white-50 small text-uppercase" style="letter-spacing: 1px;">Item do Pedido</span>
+                            </div>
                         </div>
                     <?php endforeach; ?>
                  </div>
 
-                 <div class="text-end">
+                 <div class="text-end pt-2">
                      <?php if ($o['status'] === 'PENDING'): ?>
-                        <a href="pedido.php?id=<?= $o['id'] ?>" class="btn btn-warning btn-sm fw-bold">
-                            PAGAR AGORA &rarr;
+                        <a href="pedido.php?id=<?= $o['id'] ?>" class="btn btn-warning btn-sm fw-bold px-4 rounded-pill">
+                            PAGAR E LIBERAR &rarr;
                         </a>
                      <?php else: ?>
-                        <a href="pedido.php?id=<?= $o['id'] ?>" class="btn btn-outline-light btn-sm">
+                        <a href="pedido.php?id=<?= $o['id'] ?>" class="btn btn-outline-light btn-sm px-4 rounded-pill hover-scale">
                             VER DETALHES / KEY &rarr;
                         </a>
                      <?php endif; ?>
