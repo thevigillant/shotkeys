@@ -19,9 +19,14 @@ if (!$isSuperAdmin && !$isAdminInfo) {
 
 // AUTO-REPAIR: Ensure 'active' column exists silently
 try {
-    $pdo->exec("SELECT active FROM users LIMIT 1");
+    // Check if column exists
+    $check = $pdo->query("SHOW COLUMNS FROM users LIKE 'active'");
+    if ($check->rowCount() == 0) {
+        $pdo->exec("ALTER TABLE users ADD COLUMN active TINYINT(1) DEFAULT 1");
+    }
+    $check->closeCursor(); // CRITICAL FIX: Close cursor to allow next query
 } catch (Exception $e) {
-    try { $pdo->exec("ALTER TABLE users ADD COLUMN active TINYINT(1) DEFAULT 1"); } catch (Exception $ex) {}
+    // Ignore errors here
 }
 
 $message = '';
