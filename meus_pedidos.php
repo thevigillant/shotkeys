@@ -55,6 +55,21 @@ $orders = $stmt->fetchAll();
       text-transform: uppercase;
       font-weight: 700;
     }
+    /* Accordion Overrides */
+    .accordion-button {
+        background-color: transparent !important;
+        color: #fff !important;
+    }
+    .accordion-button:not(.collapsed) {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        box-shadow: none !important;
+    }
+    .accordion-button::after {
+        filter: invert(1);
+    }
+    .accordion-item {
+        background-color: transparent !important;
+    }
   </style>
 </head>
 <body>
@@ -85,7 +100,7 @@ $orders = $stmt->fetchAll();
       </div>
     <?php else: ?>
       
-      <div class="d-flex flex-column gap-3">
+      <div class="accordion d-flex flex-column gap-3" id="ordersAccordion">
         <?php foreach ($orders as $o): ?>
           <?php 
             $statusClass = match($o['status']) {
@@ -98,45 +113,80 @@ $orders = $stmt->fetchAll();
                 'PENDING'  => 'Pendente',
                 default    => $o['status']
             };
-            $borderClass = $o['status'] === 'PENDING' ? 'border-warning' : 'border-secondary';
+            
+            // Fetch items for this order (simple query inside loop is fine for MVP, or could eager load)
+            $stmtItems = $pdo->prepare("
+                SELECT p.title, p.image_url 
+                FROM order_items oi
+                JOIN products p ON p.id = oi.product_id
+                WHERE oi.order_id = ?
+            ");
+            $stmtItems->execute([$o['id']]);
+            $orderSimpleItems = $stmtItems->fetchAll();
+            $firstItemTitle = $orderSimpleItems[0]['title'] ?? 'Produto desconhecido';
+            $itemsCount = count($orderSimpleItems);
+            $summaryTitle = $itemsCount > 1 ? "$firstItemTitle e mais " . ($itemsCount - 1) : $firstItemTitle;
           ?>
           
-          <a href="pedido.php?id=<?= (int)$o['id'] ?>" class="order-item glass-panel p-4 rounded-4 border border-opacity-25 <?= $borderClass ?>" style="min-height: auto;">
-            <div class="row align-items-center g-3">
-              
-              <!-- ID e Data -->
-              <div class="col-6 col-md-2">
-                 <span class="d-block text-white-50 small mb-1">PEDIDO</span>
-                 <span class="h5 fw-bold text-white mb-0">#<?= str_pad((string)$o['id'], 4, '0', STR_PAD_LEFT) ?></span>
-              </div>
-              
-              <div class="col-6 col-md-3">
-                 <span class="d-block text-white-50 small mb-1">DATA</span>
-                 <span class="text-white"><?= date('d M Y, H:i', strtotime($o['created_at'])) ?></span>
-              </div>
+          <div class="accordion-item glass-panel border border-opacity-25 border-secondary rounded-4 overflow-hidden mb-0" style="background: transparent;">
+            <h2 class="accordion-header" id="heading<?= $o['id'] ?>">
+              <button class="accordion-button collapsed p-4 bg-dark-transparent text-white shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= $o['id'] ?>" aria-expanded="false" aria-controls="collapse<?= $o['id'] ?>">
+                <div class="row w-100 align-items-center g-3 me-0">
+                  
+                  <!-- ID -->
+                  <div class="col-6 col-md-2">
+                     <span class="d-block text-white-50 small mb-1">PEDIDO #<?= str_pad((string)$o['id'], 4, '0', STR_PAD_LEFT) ?></span>
+                     <div class="fw-bold text-truncate"><?= htmlspecialchars($summaryTitle) ?></div>
+                  </div>
+                  
+                  <!-- Data -->
+                  <div class="col-6 col-md-3">
+                     <span class="d-block text-white-50 small mb-1">DATA</span>
+                     <span><?= date('d M Y, H:i', strtotime($o['created_at'])) ?></span>
+                  </div>
 
-              <!-- Valor -->
-              <div class="col-6 col-md-3">
-                 <span class="d-block text-white-50 small mb-1">TOTAL</span>
-                 <span class="fw-bold text-accent h5 mb-0">R$ <?= number_format(((int)$o['total_cents'])/100, 2, ',', '.') ?></span>
-              </div>
+                  <!-- Valor -->
+                  <div class="col-6 col-md-3">
+                     <span class="d-block text-white-50 small mb-1">TOTAL</span>
+                     <span class="fw-bold text-accent">R$ <?= number_format(((int)$o['total_cents'])/100, 2, ',', '.') ?></span>
+                  </div>
 
-              <!-- Status -->
-              <div class="col-6 col-md-2 text-md-center">
-                 <span class="status-badge badge rounded-pill px-3 py-2 <?= $statusClass ?> bg-opacity-75">
-                    <?= $statusLabel ?>
-                 </span>
-              </div>
-
-              <!-- Icone Seta -->
-              <div class="col-12 col-md-2 text-end d-none d-md-block">
-                 <div class="btn btn-icon btn-sm btn-outline-light rounded-circle p-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                  <!-- Status -->
+                  <div class="col-6 col-md-3 text-md-center">
+                     <span class="badge rounded-pill px-3 py-2 <?= $statusClass ?> bg-opacity-75">
+                        <?= $statusLabel ?>
+                     </span>
+                  </div>
+                </div>
+              </button>
+            </h2>
+            <div id="collapse<?= $o['id'] ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $o['id'] ?>" data-bs-parent="#ordersAccordion">
+              <div class="accordion-body bg-black bg-opacity-25 border-top border-secondary border-opacity-25">
+                 
+                 <div class="d-flex flex-column gap-2 mb-3">
+                    <?php foreach ($orderSimpleItems as $item): ?>
+                        <div class="d-flex align-items-center gap-3 p-2 rounded bg-dark border border-secondary border-opacity-10">
+                            <img src="<?= htmlspecialchars(($item['image_url'] ?? '') ?: 'assets/keys/glock/glock.png') ?>" style="width: 50px; height: 50px; object-fit: contain; background: rgba(255,255,255,0.05); border-radius: 4px;">
+                            <span class="fw-bold"><?= htmlspecialchars($item['title']) ?></span>
+                        </div>
+                    <?php endforeach; ?>
                  </div>
-              </div>
 
+                 <div class="text-end">
+                     <?php if ($o['status'] === 'PENDING'): ?>
+                        <a href="pedido.php?id=<?= $o['id'] ?>" class="btn btn-warning btn-sm fw-bold">
+                            PAGAR AGORA &rarr;
+                        </a>
+                     <?php else: ?>
+                        <a href="pedido.php?id=<?= $o['id'] ?>" class="btn btn-outline-light btn-sm">
+                            VER DETALHES / KEY &rarr;
+                        </a>
+                     <?php endif; ?>
+                 </div>
+
+              </div>
             </div>
-          </a>
+          </div>
         <?php endforeach; ?>
       </div>
 
