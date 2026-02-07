@@ -37,6 +37,7 @@ const cartManager = {
     attachListeners: function() {
         // Use capture phase to ensure we catch it before anything stops propagation
         document.addEventListener('click', (e) => {
+            console.log('Global Click:', e.target); // Debug
             
             // 1. Open Cart Trigger
             const openBtn = e.target.closest('.js-open-cart');
@@ -60,7 +61,7 @@ const cartManager = {
                     console.error('No ID found on button');
                 }
             }
-        }, false);
+        }, true); // Capture Phase = true
     },
 
     open: function() {
