@@ -1,14 +1,20 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require __DIR__ . '/../config.php';
 require_login();
 
 // Allow access if session says admin OR if it's the super admin email
-$isSuperAdmin = (isset($_SESSION['user_email']) && $_SESSION['user_email'] === 'brunosantanareisfc@gmail.com');
-$isAdminInfo = (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin');
+$userEmail = $_SESSION['user_email'] ?? '';
+$userRole = $_SESSION['user_role'] ?? '';
+
+$isSuperAdmin = ($userEmail === 'brunosantanareisfc@gmail.com');
+$isAdminInfo = ($userRole === 'admin');
 
 if (!$isSuperAdmin && !$isAdminInfo) {
-     // Debug: If rejected, show why instead of redirecting immediately
-     die("Acesso Negado. Role: " . ($_SESSION['user_role'] ?? 'N/A') . " | Email: " . ($_SESSION['user_email'] ?? 'N/A'));
+     die("Acesso Negado. Role: " . htmlspecialchars($userRole) . " | Email: " . htmlspecialchars($userEmail));
 }
 
 // AUTO-REPAIR: Ensure 'active' column exists silently
@@ -19,32 +25,39 @@ try {
 }
 
 $message = '';
+$error_msg = '';
 
-// Handle Actions (Block/Unblock/Delete)
-if (isset($_GET['action'], $_GET['id'])) {
-    $uid = (int)$_GET['id'];
-    $act = $_GET['action'];
-    
-    if ($act === 'delete') {
-        $pdo->prepare("DELETE FROM users WHERE id = ?")->execute([$uid]);
-        $message = "Usuário excluído com sucesso.";
-    } elseif ($act === 'block') {
-        $pdo->prepare("UPDATE users SET active = 0 WHERE id = ?")->execute([$uid]);
-        $message = "Usuário BLOQUEADO! Ele não poderá mais fazer login.";
-    } elseif ($act === 'unblock') {
-        $pdo->prepare("UPDATE users SET active = 1 WHERE id = ?")->execute([$uid]);
-        $message = "Usuário DESBLOQUEADO com sucesso.";
+try {
+    // Handle Actions (Block/Unblock/Delete)
+    if (isset($_GET['action'], $_GET['id'])) {
+        $uid = (int)$_GET['id'];
+        $act = $_GET['action'];
+        
+        if ($act === 'delete') {
+            $pdo->prepare("DELETE FROM users WHERE id = ?")->execute([$uid]);
+            $message = "Usuário excluído com sucesso.";
+        } elseif ($act === 'block') {
+            $pdo->prepare("UPDATE users SET active = 0 WHERE id = ?")->execute([$uid]);
+            $message = "Usuário BLOQUEADO! Ele não poderá mais fazer login.";
+        } elseif ($act === 'unblock') {
+            $pdo->prepare("UPDATE users SET active = 1 WHERE id = ?")->execute([$uid]);
+            $message = "Usuário DESBLOQUEADO com sucesso.";
+        }
     }
-}
 
-// Fetch Users with Order Stats
-$stmt = $pdo->query("
-    SELECT u.*, 
-    (SELECT COUNT(*) FROM orders WHERE user_id = u.id AND status = 'PAID') as total_orders 
-    FROM users u 
-    ORDER BY u.id DESC
-");
-$users = $stmt->fetchAll();
+    // Fetch Users with Order Stats
+    $stmt = $pdo->query("
+        SELECT u.*, 
+        (SELECT COUNT(*) FROM orders WHERE user_id = u.id AND status = 'PAID') as total_orders 
+        FROM users u 
+        ORDER BY u.id DESC
+    ");
+    $users = $stmt->fetchAll();
+
+} catch (PDOException $e) {
+    $error_msg = "Erro no Banco de Dados: " . $e->getMessage();
+    $users = []; // Avoid foreach error
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -111,6 +124,12 @@ $users = $stmt->fetchAll();
         </div>
     <?php endif; ?>
 
+    <?php if (!empty($error_msg)): ?>
+        <div style="background: rgba(255, 0, 85, 0.2); border: 1px solid #ff0055; color: #ff0055; padding: 1rem; margin-bottom: 2rem; border-radius: 8px;">
+            <?= htmlspecialchars($error_msg) ?>
+        </div>
+    <?php endif; ?>
+
     <div class="panel-header">
         <h1 class="page-title">SISTEMA DE GESTÃO DE USUÁRIOS</h1>
         <div style="color: #666;">Total: <?= count($users) ?></div>
@@ -155,8 +174,8 @@ $users = $stmt->fetchAll();
                     <small style="color: #666;">compras</small>
                 </td>
                 <td>
-                    <?php if ($u['email'] !== $_SESSION['user_email']): ?> 
-                        <?php if ($u['active'] == 1): ?>
+                    <?php if (($u['email'] ?? '') !== $userEmail): ?> 
+                        <?php if (($u['active'] ?? 1) == 1): ?>
                             <a href="users.php?action=block&id=<?= $u['id'] ?>" class="btn-action btn-block" title="Bloquear Acesso">BLOQUEAR</a>
                         <?php else: ?>
                             <a href="users.php?action=unblock&id=<?= $u['id'] ?>" class="btn-action btn-unblock" title="Liberar Acesso">LIBERAR</a>
