@@ -35,44 +35,32 @@ const cartManager = {
     },
 
     attachListeners: function() {
+        // Use capture phase to ensure we catch it before anything stops propagation
         document.addEventListener('click', (e) => {
-            // Open Cart Trigger
+            
+            // 1. Open Cart Trigger
             const openBtn = e.target.closest('.js-open-cart');
             if (openBtn) {
                 e.preventDefault();
+                console.log('Open Cart Clicked');
                 this.open();
                 return;
             }
 
-            // Add to Cart Trigger
+            // 2. Add to Cart Trigger
             const addBtn = e.target.closest('.js-add-cart');
             if (addBtn) {
                 e.preventDefault();
-                const id = addBtn.dataset.id;
+                console.log('Add Cart Clicked via Delegation');
                 
-                if(!id) {
-                    console.error('Product ID missing on button', addBtn);
-                    return;
+                const id = addBtn.dataset.id;
+                if(id) {
+                    this.add(id, addBtn);
+                } else {
+                    console.error('No ID found on button');
                 }
-
-                // Visual Feedback
-                const originalText = addBtn.innerHTML;
-                addBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ...';
-                addBtn.disabled = true;
-
-                this.add(id).then(() => {
-                    // Restore button after delay
-                    setTimeout(() => {
-                        addBtn.innerHTML = originalText;
-                        addBtn.disabled = false;
-                        
-                        // Optional: Show success tick
-                        const icon = addBtn.querySelector('svg');
-                        if(icon) icon.style.color = '#00ff00';
-                    }, 500);
-                });
             }
-        });
+        }, false);
     },
 
     open: function() {
