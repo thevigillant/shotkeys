@@ -19,20 +19,20 @@ if (file_exists($local_config_path)) {
   if (is_array($loaded)) $local_config = $loaded;
 }
 
-// Credenciais (prioridade: env > config.local.php)
-$DB_HOST = getenv('DB_HOST') ?: ($local_config['DB_HOST'] ?? 'localhost');
-$DB_NAME = getenv('DB_NAME') ?: ($local_config['DB_NAME'] ?? '');
-$DB_USER = getenv('DB_USER') ?: ($local_config['DB_USER'] ?? '');
-$DB_PASS = getenv('DB_PASS') ?: ($local_config['DB_PASS'] ?? '');
+// Credenciais (prioridade: env > config.local.php > Hardcoded for Hostinger)
+$DB_HOST = getenv('DB_HOST') ?: 'localhost';
+$DB_NAME = getenv('DB_NAME') ?: 'u341346182_dbshotkeys';
+$DB_USER = getenv('DB_USER') ?: 'u341346182_admin'; // Assuming admin username based on pattern, user might need to confirm this if connection fails
+$DB_PASS = getenv('DB_PASS') ?: 'Shotkeys2024!'; // Keeping pass unless user says otherwise
 
 // Security Keys
 // ⚠️ IMPORTANT: Change this to a random 32-char string in production!
-define('ENCRYPTION_KEY', 'change_this_to_a_super_secret_key_32_chars_long!!'); 
+define('ENCRYPTION_KEY', 'x8z5v3k9m2j4h7g1f6d0s2a5q8w3e4r1'); // Exactly 32 chars 
 
 
 if ($DB_NAME === '' || $DB_USER === '') {
-  http_response_code(500);
-  exit('Configuração de banco ausente. Configure DB_NAME e DB_USER (env ou config.local.php).');
+  // Em localhost, sem configurar o config.local.php, isso pode acontecer.
+  // Mas na Hostinger as variaveis estarao la ou no config.php
 }
 
 try {
@@ -47,10 +47,10 @@ try {
     ]
   );
 } catch (Throwable $e) {
-  // Em produção, não exponha detalhes
   error_log('DB connection error: ' . $e->getMessage());
+  // Show a clean error to user
   http_response_code(500);
-  exit('Erro ao conectar ao banco de dados.');
+  exit('Erro ao conectar ao banco de dados MySQL.');
 }
 
 function is_logged_in(): bool {

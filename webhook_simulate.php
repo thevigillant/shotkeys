@@ -54,6 +54,19 @@ try {
         $key = $deliveryService->deliverKey((int)$order['id'], (int)$item['product_id']);
         
         if ($key) {
+            // Send Email
+            $userStmt = $pdo->prepare("SELECT email FROM users WHERE id = ?");
+            $userStmt->execute([$order['user_id']]);
+            $userEmail = $userStmt->fetchColumn();
+
+            if ($userEmail) {
+                $subject = "Sua Key ShotKeys Chegou!";
+                $message = "Obrigado pela compra! Aqui esta sua key:\n\n" . $key . "\n\nAtenciosamente,\nEquipe ShotKeys";
+                $headers = "From: no-reply@shotkeys.store";
+                // Suppress errors for localhost
+                @mail($userEmail, $subject, $message, $headers);
+            }
+
             echo json_encode(['status' => 'success', 'message' => 'Order Paid and Key Delivered']);
         } else {
             // Paid but no key stock? 

@@ -52,6 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <title>Criar conta - ShotKeys</title>
   
   <!-- Base URL -->
+  <!-- Base URL -->
   <base href="https://shotkeys.store" />
 
   <!-- FavIcon -->

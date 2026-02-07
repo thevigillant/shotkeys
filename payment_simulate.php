@@ -98,6 +98,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_payment'])) {
                     <p class="text-white-50">Pedido #<?= $order['id'] ?></p>
                 </div>
 
+                <!-- QR Code & Pix Info -->
+                <div class="mb-4 bg-white rounded p-3 text-dark">
+                    <h5 class="fw-bold mb-2">Pague via Pix</h5>
+                    
+                    <!-- QR Code (Generating a generic one for the key) -->
+                    <!-- In a real app, use a library to generate the EMVCo payload -->
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=02060330602" alt="QR Code Pix" class="img-fluid mb-2">
+                    
+                    <div class="mt-2 text-start p-2 border rounded bg-light">
+                        <small class="d-block text-muted fw-bold">Chave Pix (CPF):</small>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fs-5 fw-bold text-break" style="letter-spacing: 1px;">020.603.306-02</span>
+                        </div>
+                        <small class="d-block text-muted mt-1">Banco: Nubank</small>
+                    </div>
+                </div>
+
                 <!-- Amount -->
                 <h2 class="display-3 fw-bold text-white mb-5">
                     R$ <?= number_format($order['total_cents']/100, 2, ',', '.') ?>
@@ -129,19 +146,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_payment'])) {
   </div>
 
   <script>
-    // Simulate finding the payment details
+    // Display controls immediately to prevent "infinite loading"
+    document.getElementById('connecting').style.display = 'none';
+    const controls = document.getElementById('controls');
+    controls.style.display = 'block';
+    controls.style.opacity = '1';
+
+    // Simulate finding the payment details (Fallback just in case)
+    /*
     window.addEventListener('load', function() {
-        setTimeout(() => {
-            const connecting = document.getElementById('connecting');
-            if(connecting) connecting.style.display = 'none';
-            
-            const controls = document.getElementById('controls');
-            if(controls) {
-                controls.style.display = 'block';
-                controls.style.opacity = '1';
-            }
-        }, 1500);
+       // logic removed for speed
     });
+    */
 
     async function approvePayment() {
         const btn = document.querySelector('.btn-success');
