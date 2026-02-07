@@ -102,9 +102,9 @@ $items = $stmt->fetchAll();
                 <h2 class="h6 text-white-50 text-uppercase fw-bold mb-3 tracking-wider">Itens Adquiridos</h2>
                 <div class="d-flex flex-column gap-2">
                     <?php foreach ($items as $it): ?>
-                    <div class="d-flex justify-content-between align-items-center p-3 rounded-3 bg-white bg-opacity-5 border border-white border-opacity-10">
+                    <div class="d-flex justify-content-between align-items-center p-3 rounded-3" style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);">
                         <div class="d-flex align-items-center gap-3">
-                            <div class="rounded bg-dark d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                            <div class="rounded bg-dark d-flex align-items-center justify-content-center border border-secondary" style="width: 40px; height: 40px;">
                                 🎮
                             </div>
                             <div>
