@@ -35,15 +35,11 @@ const cartManager = {
     },
 
     attachListeners: function() {
-        // Use capture phase to ensure we catch it before anything stops propagation
         document.addEventListener('click', (e) => {
-            console.log('Global Click:', e.target); // Debug
-            
             // 1. Open Cart Trigger
             const openBtn = e.target.closest('.js-open-cart');
             if (openBtn) {
                 e.preventDefault();
-                console.log('Open Cart Clicked');
                 this.open();
                 return;
             }
@@ -52,16 +48,25 @@ const cartManager = {
             const addBtn = e.target.closest('.js-add-cart');
             if (addBtn) {
                 e.preventDefault();
-                console.log('Add Cart Clicked via Delegation');
-                
                 const id = addBtn.dataset.id;
-                if(id) {
-                    this.add(id, addBtn);
-                } else {
-                    console.error('No ID found on button');
-                }
+                if(id) this.add(id, addBtn);
+                return;
             }
-        }, true); // Capture Phase = true
+
+            // 3. Checkout
+            if (e.target.closest('.js-checkout')) {
+                e.preventDefault();
+                window.location.href = 'checkout.php';
+                return;
+            }
+
+            // 4. Clear Cart
+            if (e.target.closest('.js-clear-cart')) {
+                e.preventDefault();
+                this.clear();
+                return;
+            }
+        }, true);
     },
 
     open: function() {

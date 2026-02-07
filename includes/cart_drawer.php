@@ -19,11 +19,11 @@
             <span class="text-white-50">Total Estimado</span>
             <span class="h4 archivofont text-white mb-0" id="cartTotalMain">R$ 0,00</span>
         </div>
-        <button onclick="window.location.href='checkout.php'" id="btnFinalizar" class="btn btn-custom w-100 py-3 fw-bold text-uppercase d-flex justify-content-between align-items-center mb-2">
+        <button id="btnFinalizar" class="btn btn-custom w-100 py-3 fw-bold text-uppercase d-flex justify-content-between align-items-center mb-2 js-checkout">
             <span>Finalizar Compra</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         </button>
-        <button onclick="cartManager.clear()" class="btn btn-sm text-white-50 w-100 hover-white">
+        <button class="btn btn-sm text-white-50 w-100 hover-white js-clear-cart">
             Esvaziar Carrinho
         </button>
     </div>
