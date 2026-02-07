@@ -68,6 +68,8 @@ $products = $pdo->query("SELECT * FROM products ORDER BY id DESC")->fetchAll();
   <title>Gerenciar Produtos | ShotKeys Admin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <base href="https://shotkeys.store/admin/" />
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
   <style>
     /* Same Admin Theme */
@@ -135,71 +137,9 @@ $products = $pdo->query("SELECT * FROM products ORDER BY id DESC")->fetchAll();
 
     <div class="panel-header">
         <h1 class="page-title">ARSENAL (PRODUTOS)</h1>
-        <button onclick="toggleForm()" class="btn-create">+ NOVO ITEM</button>
+        <button onclick="openModal()" class="btn-create">+ NOVO ITEM</button>
     </div>
 
-    <!-- Edit/Create Form -->
-    <div id="productForm" class="edit-form">
-        <h3 style="color: var(--neon-blue); margin-top: 0;">Dados do Produto</h3>
-        <form method="POST">
-            <input type="hidden" name="id" id="f_id">
-            
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                <div class="form-group">
-                    <label class="form-label">Título</label>
-                    <input type="text" name="title" id="f_title" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Slug (URL)</label>
-                    <input type="text" name="slug" id="f_slug" class="form-control" placeholder="Automatico se vazio">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Descrição</label>
-                <textarea name="description" id="f_description" class="form-control" rows="3"></textarea>
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
-                <div class="form-group">
-                    <label class="form-label">Preço (R$)</label>
-                    <input type="number" step="0.01" name="price" id="f_price" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Categoria</label>
-                    <select name="category" id="f_category" class="form-control">
-                        <option value="AAA">AAA</option>
-                        <option value="Indie">Indie</option>
-                        <option value="FPS">FPS</option>
-                        <option value="RPG">RPG</option>
-                        <option value="Random">Random Box</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Tipo</label>
-                    <select name="type" id="f_type" class="form-control">
-                        <option value="KEY">Chave (Digital)</option>
-                        <option value="RANDOM_BOX">Random Box</option>
-                        <option value="AFFILIATE">Afiliado (Link Externo)</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">URL da Imagem</label>
-                <input type="text" name="image_url" id="f_image_url" class="form-control">
-            </div>
-
-             <div class="form-group">
-                <label class="form-label">Link de Afiliado (Se aplicável)</label>
-                <input type="text" name="affiliate_url" id="f_affiliate_url" class="form-control">
-            </div>
-
-            <button type="submit" class="btn-save">SALVAR DADOS</button>
-            <button type="button" onclick="toggleForm()" style="background: transparent; border: 1px solid #666; color: #888; padding: 10px; width: 100%; margin-top: 10px; cursor: pointer;">CANCELAR</button>
-        </form>
-    </div>
-    
     <!-- Product List -->
     <table>
         <thead>
@@ -238,19 +178,75 @@ $products = $pdo->query("SELECT * FROM products ORDER BY id DESC")->fetchAll();
   </main>
 </div>
 
-<script>
-function toggleForm() {
-    var form = document.getElementById('productForm');
-    if (form.style.display === 'none' || form.style.display === '') {
-        form.style.display = 'block';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-        form.style.display = 'none';
-        document.getElementById('f_id').value = ''; 
-        // Reset form fields manually to avoid index issues
-        document.querySelectorAll('#productForm input, #productForm select, #productForm textarea').forEach(i => i.value = '');
-    }
-}
+    <!-- Modal do Produto -->
+    <div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true" style="color: #000;">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="background: #1a1a2e; border: 1px solid var(--neon-blue); color: #fff;">
+          <div class="modal-header" style="border-bottom: 1px solid var(--border-color);">
+            <h5 class="modal-title" style="font-family: 'Orbitron'">DADOS DO PRODUTO</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form method="POST" id="mainForm">
+                <input type="hidden" name="id" id="f_id">
+                
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Título</label>
+                        <input type="text" name="title" id="f_title" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Slug (URL)</label>
+                        <input type="text" name="slug" id="f_slug" class="form-control" placeholder="Automático se vazio">
+                    </div>
+                    
+                    <div class="col-12">
+                        <label class="form-label">Descrição</label>
+                        <textarea name="description" id="f_description" class="form-control" rows="3"></textarea>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Preço (R$)</label>
+                        <input type="number" step="0.01" name="price" id="f_price" class="form-control" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Categoria</label>
+                        <select name="category" id="f_category" class="form-control">
+                            <option value="AAA">AAA</option>
+                            <option value="Indie">Indie</option>
+                            <option value="FPS">FPS</option>
+                            <option value="RPG">RPG</option>
+                            <option value="Random">Random Box</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Tipo</label>
+                        <select name="type" id="f_type" class="form-control">
+                            <option value="KEY">Chave (Digital)</option>
+                            <option value="RANDOM_BOX">Random Box</option>
+                            <option value="AFFILIATE">Afiliado (Link Externo)</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12">
+                         <label class="form-label">URL da Imagem</label>
+                         <input type="text" name="image_url" id="f_image_url" class="form-control">
+                    </div>
+                    <div class="col-12">
+                         <label class="form-label">Link de Afiliado (Se aplicável)</label>
+                         <input type="text" name="affiliate_url" id="f_affiliate_url" class="form-control">
+                    </div>
+                </div>
+
+                <div class="mt-4 text-end">
+                    <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">CANCELAR</button>
+                    <button type="submit" class="btn-save" style="width: auto;">SALVAR DADOS</button>
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
 
 function editProduct(p) {
     document.getElementById('productForm').style.display = 'block';
@@ -269,5 +265,6 @@ function editProduct(p) {
 }
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
