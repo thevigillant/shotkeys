@@ -8,6 +8,15 @@ if (empty($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
      exit;
 }
 
+// AUTO-REPAIR: Ensure 'active' column exists silently
+try {
+    $pdo->exec("SELECT active FROM users LIMIT 1");
+} catch (Exception $e) {
+    try { $pdo->exec("ALTER TABLE users ADD COLUMN active TINYINT(1) DEFAULT 1"); } catch (Exception $ex) {}
+}
+
+$message = '';
+
 // Handle Actions (Block/Unblock/Delete)
 if (isset($_GET['action'], $_GET['id'])) {
     $uid = (int)$_GET['id'];
@@ -15,10 +24,13 @@ if (isset($_GET['action'], $_GET['id'])) {
     
     if ($act === 'delete') {
         $pdo->prepare("DELETE FROM users WHERE id = ?")->execute([$uid]);
+        $message = "Usuário excluído com sucesso.";
     } elseif ($act === 'block') {
         $pdo->prepare("UPDATE users SET active = 0 WHERE id = ?")->execute([$uid]);
+        $message = "Usuário BLOQUEADO! Ele não poderá mais fazer login.";
     } elseif ($act === 'unblock') {
         $pdo->prepare("UPDATE users SET active = 1 WHERE id = ?")->execute([$uid]);
+        $message = "Usuário DESBLOQUEADO com sucesso.";
     }
 }
 
@@ -89,6 +101,13 @@ $users = $stmt->fetchAll();
   </aside>
 
   <main class="main-content">
+    
+    <?php if ($message): ?>
+        <div style="background: rgba(0, 255, 153, 0.2); border: 1px solid #00ff99; color: #00ff99; padding: 1rem; margin-bottom: 2rem; border-radius: 8px;">
+            <?= htmlspecialchars($message) ?>
+        </div>
+    <?php endif; ?>
+
     <div class="panel-header">
         <h1 class="page-title">SISTEMA DE GESTÃO DE USUÁRIOS</h1>
         <div style="color: #666;">Total: <?= count($users) ?></div>

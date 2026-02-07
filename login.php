@@ -11,26 +11,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   } else {
     try {
       $stmt = $pdo->prepare('SELECT id, name, password_hash, role FROM users WHERE email = ? LIMIT 1');
+      $stmt = $pdo->prepare('SELECT id, name, password_hash, role, active FROM users WHERE email = ? LIMIT 1');
       $stmt->execute([$email]);
       $user = $stmt->fetch();
 
       if (!$user || !password_verify($password, $user['password_hash'])) {
         $errors[] = 'E-mail ou senha incorretos.';
       } else {
-        // Iniciar a sessão, se ainda não estiver iniciada
-        
-        session_regenerate_id(true);
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['user_name'] = $user['name'];
-        $_SESSION['user_role'] = $user['role'] ?? 'user';
+        // CHECK IF BLOCKED
+        if (isset($user['active']) && $user['active'] == 0) {
+             $errors[] = "🚫 Sua conta foi desativada pelo administrador. Entre em contato com o suporte.";
+        } else {
+            // Iniciar a sessão, se ainda não estiver iniciada
+            
+            session_regenerate_id(true);
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_name'] = $user['name'];
+            $_SESSION['user_role'] = $user['role'] ?? 'user';
+            $_SESSION['user_email'] = $user['email']; // Added user_email
 
-        // Redireciona
-        $to = 'dashboard.php';
-        if (!empty($_GET['redirect'])) {
-          $to = filter_var($_GET['redirect'], FILTER_SANITIZE_URL);
+            // Generate CSRF Token
+            if (empty($_SESSION['csrf_token'])) {
+                $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+            }
+
+            // Redireciona
+            $to = 'dashboard.php';
+            if (!empty($_GET['redirect'])) {
+              $to = filter_var($_GET['redirect'], FILTER_SANITIZE_URL);
+            }
+            header("Location: $to");
+            exit;
         }
-        header("Location: $to");
-        exit;
       }
     } catch (PDOException $e) {
       error_log("Database error during login: " . $e->getMessage());
