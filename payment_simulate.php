@@ -130,12 +130,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_payment'])) {
 
   <script>
     // Simulate finding the payment details
-    setTimeout(() => {
-        document.getElementById('connecting').style.display = 'none';
-        const controls = document.getElementById('controls');
-        controls.style.display = 'block';
-        requestAnimationFrame(() => controls.style.opacity = '1');
-    }, 1500);
+    window.addEventListener('load', function() {
+        setTimeout(() => {
+            const connecting = document.getElementById('connecting');
+            if(connecting) connecting.style.display = 'none';
+            
+            const controls = document.getElementById('controls');
+            if(controls) {
+                controls.style.display = 'block';
+                controls.style.opacity = '1';
+            }
+        }, 1500);
+    });
 
     async function approvePayment() {
         const btn = document.querySelector('.btn-success');
