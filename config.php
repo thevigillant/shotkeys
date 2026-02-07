@@ -12,6 +12,9 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Opcional: carregar config.local.php (não versionar)
+// Allow inline scripts (fixes CSP blocking issue)
+header("Content-Security-Policy: default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src *; style-src * 'unsafe-inline';");
+
 $local_config = [];
 $local_config_path = __DIR__ . '/config.local.php';
 if (file_exists($local_config_path)) {
